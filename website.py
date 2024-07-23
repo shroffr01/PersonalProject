@@ -38,7 +38,6 @@ def page1():
     selected_lon = selected_row['lng']
     
     def weather_forecast(selected_lat, selected_lon):
-        st.write('hi')
 
         r = requests.get('https://httpbin.org/user-agent')
         useragent = json.loads(r.text)['user-agent']
@@ -60,54 +59,54 @@ def page1():
         myjson = json.loads(r.text)
         df1 = pd.json_normalize(myjson['properties']['periods'])
 
-        fig = go.Figure()
-        # Create and style traces
+        def make_hourly_plot(title, yaxis, var_to_plot, color):
 
-        fig.update_layout(title = '<b> Temperature Forecast <b> ', 
+            fig = go.Figure()
+
+            fig.update_layout(title = f'<b> {title} Forecast <b> ', 
                         title_font_size= 20, xaxis_title = 'Date', 
-                        yaxis_title = 'Temperature (F)', title_font_color = 'black',
+                        yaxis_title = f'{yaxis}', title_font_color = 'black',
                         title_font_weight = "bold")
-        fig.update_layout(height=350, width = 1100, legend=dict(font=dict(size= 20)))
-        fig.update_layout(xaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
-        fig.update_layout(yaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
-        fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
-        fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot") 
-        fig.update_layout(plot_bgcolor='white') 
+            fig.update_layout(height=350, width = 1100, legend=dict(font=dict(size= 20)))
+            fig.update_layout(xaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
+            fig.update_layout(yaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
+            fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
+            fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot") 
+            fig.update_layout(plot_bgcolor='white') 
 
-        fig.add_trace(go.Scatter(x=df1['startTime'], y=df1['temperature'],
-                                line=dict(color='firebrick', width=4)))
+            fig.add_trace(go.Scatter(x=df1['startTime'], y=var_to_plot,
+                                line=dict(color=color, width=4)))
+
+            st.plotly_chart(fig)
+
+        make_hourly_plot('Temperature','Temperature (F)',df1['temperature'],'firebrick' )
+        
+        # fig = go.Figure()
+        # # Create and style traces
+
+        # fig.update_layout(title = '<b> Temperature Forecast <b> ', 
+        #                 title_font_size= 20, xaxis_title = 'Date', 
+        #                 yaxis_title = 'Temperature (F)', title_font_color = 'black',
+        #                 title_font_weight = "bold")
+        # fig.update_layout(height=350, width = 1100, legend=dict(font=dict(size= 20)))
+        # fig.update_layout(xaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
+        # fig.update_layout(yaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
+        # fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
+        # fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot") 
+        # fig.update_layout(plot_bgcolor='white') 
+
+        # fig.add_trace(go.Scatter(x=df1['startTime'], y=df1['temperature'],
+        #                         line=dict(color='firebrick', width=4)))
 
         
         
-        st.plotly_chart(fig)
+        # st.plotly_chart(fig)
+
+        
 
         st.title("7-Day Weather Forecast")
 
-        # Function to format the date
-        def format_date(date_str):
-            date = datetime.datetime.fromisoformat(date_str[:-6])
-            return date.strftime('%A, %b %d')
-
-        # Display each day's forecast
-        for _, row in df.iterrows():
-            st.subheader(f"{format_date(row['startTime'])} | {'Day' if row['isDaytime'] else 'Night'}")
-            
-            col1, col2, col3 = st.columns([1, 3, 3])
-            
-            with col1:
-                st.image(row['icon'], width=50)
-            
-            with col2:
-                st.write(f"### {row['temperature']}°{row['temperatureUnit']}")
-                st.write(f"{row['shortForecast']}")
-            
-            with col3:
-                st.write(f"**Humidity**: {row['relativeHumidity.value']}%")
-                st.write(f"**Wind**: {row['windSpeed']} {row['windDirection']}")
-                st.write(f"**Precipitation**: {row['probabilityOfPrecipitation.value']}%")
-                st.write(f"**Details**: {row['detailedForecast']}")
-
-            st.write("---")
+        
             
     weather_forecast(selected_lat, selected_lon)
 
