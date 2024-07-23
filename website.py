@@ -79,8 +79,10 @@ def page1():
 
             st.plotly_chart(fig)
 
-        make_hourly_plot('Temperature','Temperature (F)',df1['temperature'],'green' )
-        
+        make_hourly_plot('Temperature','Temperature (F)',df1['temperature'],'red' )
+        make_hourly_plot('Probability of Precipitation','%',df1['probabilityOfPrecipitation.value'],'green' )
+        make_hourly_plot('Wind Speed','Wind Speed (mph)',df1['windSpeed'],'black' )
+
         # fig = go.Figure()
         # # Create and style traces
 
