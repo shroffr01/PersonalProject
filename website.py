@@ -79,7 +79,7 @@ def page1():
 
             st.plotly_chart(fig)
 
-        make_hourly_plot('Temperature','Temperature (F)',df1['temperature'],'firebrick' )
+        make_hourly_plot('Temperature','Temperature (F)',df1['temperature'],'green' )
         
         # fig = go.Figure()
         # # Create and style traces
