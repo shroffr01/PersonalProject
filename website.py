@@ -38,7 +38,7 @@ def page1():
     selected_lon = selected_row['lng']
     
     def weather_forecast(selected_lat, selected_lon):
-
+        st.write('hi')
         r = requests.get('https://httpbin.org/user-agent')
         useragent = json.loads(r.text)['user-agent']
         headers = {'User-agent': useragent}
