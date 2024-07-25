@@ -43,7 +43,7 @@ def page1():
         useragent = json.loads(r.text)['user-agent']
         headers = {'User-agent': useragent}
 
-        # Get URL for hourly forecast data
+        # Get URL for hourly forecast data and hourly grid data
 
         url = f"https://api.weather.gov/points/{selected_lat},{selected_lon}"
         r = requests.get(url, headers = headers)
@@ -51,6 +51,7 @@ def page1():
         myjson = json.loads(r.text)
         df1 = pd.json_normalize(myjson['properties'])
         hourlyURL = df1['forecastHourly'].iloc[0]   
+        hourlyURL_grid = df1['forecastGridData'].iloc[0] 
 
         # Obtain actual hourly forecast data
 
@@ -58,6 +59,13 @@ def page1():
 
         myjson = json.loads(r.text)
         df1 = pd.json_normalize(myjson['properties']['periods'])
+
+        # Obtain grid hourly data for sky cover, heat index, etc. 
+
+        r_g = requests.get(hourlyURL_grid, headers = headers)
+
+        myjson_g = json.loads(r.text)
+        df_skycover = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
 
         def make_hourly_plot(title, yaxis, var_to_plot, color):
 
@@ -82,30 +90,7 @@ def page1():
         make_hourly_plot('Temperature','Temperature (F)',df1['temperature'],'red' )
         make_hourly_plot('Probability of Precipitation','%',df1['probabilityOfPrecipitation.value'],'green' )
         make_hourly_plot('Wind Speed','Wind Speed (mph)',df1['windSpeed'],'black' )
-
-        # fig = go.Figure()
-        # # Create and style traces
-
-        # fig.update_layout(title = '<b> Temperature Forecast <b> ', 
-        #                 title_font_size= 20, xaxis_title = 'Date', 
-        #                 yaxis_title = 'Temperature (F)', title_font_color = 'black',
-        #                 title_font_weight = "bold")
-        # fig.update_layout(height=350, width = 1100, legend=dict(font=dict(size= 20)))
-        # fig.update_layout(xaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
-        # fig.update_layout(yaxis = dict(title_font = dict(size=16), tickfont = dict(size=14)))
-        # fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
-        # fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot") 
-        # fig.update_layout(plot_bgcolor='white') 
-
-        # fig.add_trace(go.Scatter(x=df1['startTime'], y=df1['temperature'],
-        #                         line=dict(color='firebrick', width=4)))
-
         
-        
-        # st.plotly_chart(fig)
-
-        
-
         st.title("7-Day Weather Forecast")
 
         
