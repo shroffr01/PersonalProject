@@ -38,7 +38,7 @@ def page1():
     selected_lon = selected_row['lng']
     
     def weather_forecast(selected_lat, selected_lon):
-        st.write('hi')
+        #st.write('hi')
         r = requests.get('https://httpbin.org/user-agent')
         useragent = json.loads(r.text)['user-agent']
         headers = {'User-agent': useragent}
@@ -90,7 +90,7 @@ def page1():
         make_hourly_plot('Probability of Precipitation','%',df1['probabilityOfPrecipitation.value'],'green' )
         make_hourly_plot('Wind Speed','Wind Speed (mph)',df1['windSpeed'],'black' )
         
-
+        
         df_skycover = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
         df_windgust = pd.json_normalize(myjson_g['properties']['windGust']['values'])
         df_snowfall = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
@@ -111,7 +111,9 @@ def page1():
         df_wind_chill = convert_time(df_wind_chill)
         df_visibility = convert_time(df_visibility)  
 
-        make_hourly_plot('Skycover', 'Skycover %', df_skycover['skyCover'], 'blue')
+        
+
+        make_hourly_plot('Skycover', 'Skycover %', df_skycover['value'], 'blue')
             
     weather_forecast(selected_lat, selected_lon)
 
