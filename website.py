@@ -114,9 +114,9 @@ def page1():
         
 
         make_hourly_plot('Skycover', 'Skycover %', df_skycover['value'], 'blue')
-        make_hourly_plot('Wind Gust', 'Wind Gust (mph)', df_windgust['value'], 'blue')
-        make_hourly_plot('visibility', 'miles', df_heat_index['value'], 'blue')
-        make_hourly_plot('heatindex', 'Temperature (F)', df_visibility['value'], 'blue')
+        make_hourly_plot('Wind Gust', 'Wind Gust (mph)', df_windgust['value'], 'purple')
+        make_hourly_plot('visibility', 'miles', df_heat_index['value'], 'grey')
+        make_hourly_plot('heatindex', 'Temperature (F)', df_visibility['value'], 'red')
             
     weather_forecast(selected_lat, selected_lon)
 
