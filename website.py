@@ -36,35 +36,46 @@ def page1():
     selected_lat = selected_row['lat']
 
     selected_lon = selected_row['lng']
-    
-    def weather_forecast(selected_lat, selected_lon):
-        #st.write('hi')
-        r = requests.get('https://httpbin.org/user-agent')
-        useragent = json.loads(r.text)['user-agent']
-        headers = {'User-agent': useragent}
 
-        # Get URL for hourly forecast data and hourly grid data
+    options = st.multiselect('Select variables to plot:', ['Temperature','Prob. of Precipitation', 'Wind Speed', 
+    'Sky Cover', 'Heat Index', 'Visibility'], default = ['Temperature','Prob. of Precipitation', 'Wind Speed', 
+                        'Sky Cover'])
+        
+    def weather_forecast(selected_lat, selected_lon, options):
+        
+        def get_data(selected_lat, selected_lon):
+            
+            r = requests.get('https://httpbin.org/user-agent')
+            useragent = json.loads(r.text)['user-agent']
+            headers = {'User-agent': useragent}
 
-        url = f"https://api.weather.gov/points/{selected_lat},{selected_lon}"
-        r = requests.get(url, headers = headers)
+            # Get URL for hourly forecast data and hourly grid data
 
-        myjson = json.loads(r.text)
-        df1 = pd.json_normalize(myjson['properties'])
-        hourlyURL = df1['forecastHourly'].iloc[0]   
-        hourlyURL_grid = df1['forecastGridData'].iloc[0] 
+            url = f"https://api.weather.gov/points/{selected_lat},{selected_lon}"
+            r = requests.get(url, headers = headers)
 
-        # Obtain actual hourly forecast data
+            myjson = json.loads(r.text)
+            df_url_info = pd.json_normalize(myjson['properties'])
 
-        r = requests.get(hourlyURL, headers = headers)
+            hourlyURL = df_url_info['forecastHourly'].iloc[0]   
+            hourlyURL_grid = df_url_info['forecastGridData'].iloc[0] 
 
-        myjson = json.loads(r.text)
-        df1 = pd.json_normalize(myjson['properties']['periods'])
+            # Obtain actual hourly forecast data
+
+            r = requests.get(hourlyURL, headers = headers)
+            r_g = requests.get(hourlyURL_grid, headers = headers)
+
+
+            myjson = json.loads(r.text)
+            myjson_g = json.loads(r_g.text)
+
+            df1 = pd.json_normalize(myjson['properties']['periods'])
+
+            return df1, myjson_g
+        
+        df, myjson_g = get_data(selected_lat, selected_lon)
 
         # Obtain grid hourly data for sky cover, heat index, etc. 
-
-        r_g = requests.get(hourlyURL_grid, headers = headers)
-
-        myjson_g = json.loads(r_g.text)
 
         def make_hourly_plot(title, yaxis, var_to_plot, color):
 
@@ -86,32 +97,35 @@ def page1():
 
             st.plotly_chart(fig)
 
-        make_hourly_plot('Temperature','Temperature (F)',df1['temperature'],'red' )
-        make_hourly_plot('Probability of Precipitation','%',df1['probabilityOfPrecipitation.value'],'green' )
-        make_hourly_plot('Wind Speed','Wind Speed (mph)',df1['windSpeed'],'black' )
+        make_hourly_plot('Temperature','Temperature (F)',df['temperature'],'red' )
+        make_hourly_plot('Probability of Precipitation','%',df['probabilityOfPrecipitation.value'],'green' )
+        make_hourly_plot('Wind Speed','Wind Speed (mph)',df['windSpeed'],'black' )
+
+        def norm_g_data(myjson_g):
         
+            df0 = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
+            df1 = pd.json_normalize(myjson_g['properties']['windGust']['values'])
+            df2 = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
+            df3 = pd.json_normalize(myjson_g['properties']['heatIndex']['values'])
+            df4 = pd.json_normalize(myjson_g['properties']['windChill']['values'])
+            df5 = pd.json_normalize(myjson_g['properties']['visibility']['values'])
+
+            def convert_time(var_name):
+
+                var_name['validTime'] = var_name['validTime'].str.extract(r'^(.*?)/')
+                var_name['validTime'] = pd.to_datetime(var_name['validTime'])
+                return var_name
+
+            df_skycover = convert_time(df0)
+            df_windgust = convert_time(df1)
+            df_snowfall = convert_time(df2)
+            df_heat_index = convert_time(df3)
+            df_wind_chill = convert_time(df4)
+            df_visibility = convert_time(df5)  
         
-        df_skycover = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
-        df_windgust = pd.json_normalize(myjson_g['properties']['windGust']['values'])
-        df_snowfall = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
-        df_heat_index = pd.json_normalize(myjson_g['properties']['heatIndex']['values'])
-        df_wind_chill = pd.json_normalize(myjson_g['properties']['windChill']['values'])
-        df_visibility = pd.json_normalize(myjson_g['properties']['visibility']['values'])
-
-        def convert_time(var_name):
-
-            var_name['validTime'] = var_name['validTime'].str.extract(r'^(.*?)/')
-            var_name['validTime'] = pd.to_datetime(var_name['validTime'])
-            return var_name
-
-        df_skycover = convert_time(df_skycover)
-        df_windgust = convert_time(df_windgust)
-        df_snowfall = convert_time(df_snowfall)
-        df_heat_index = convert_time(df_heat_index)
-        df_wind_chill = convert_time(df_wind_chill)
-        df_visibility = convert_time(df_visibility)  
-
+            return df_skycover, df_windgust, df_snowfall, df_heat_index, df_wind_chill, df_visibility
         
+        df_skycover, df_windgust, df_snowfall, df_heat_index, df_wind_chill, df_visibility = norm_g_data(myjson_g)
 
         make_hourly_plot('Skycover', 'Skycover %', df_skycover['value'], 'blue')
         make_hourly_plot('Wind Gust', 'Wind Gust (mph)', df_windgust['value'], 'purple')
