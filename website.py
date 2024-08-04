@@ -54,7 +54,14 @@ def page1():
 
         def make_button(df_alerts, i):
             df_sel = df_alerts.loc[i]
-            st.button(df_sel['properties.event'], key = i, type="primary")
+
+            event = df_sel['properties.event']
+            description = df_sel['properties.description']
+
+            #st.button(df_sel['properties.event'], key = i, type="primary")
+
+            if st.button(event, key=f'button_{i}'):
+                st.write(description)
                 
         if len(df_alerts) == 0:
             st.write(':green[NO WEATHER ALERTS]')
