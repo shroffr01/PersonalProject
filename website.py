@@ -37,8 +37,40 @@ def page1():
 
     selected_lon = selected_row['lng']
 
+    def weather_alerts(selected_lat, selected_lon):
+
+        r = requests.get('https://httpbin.org/user-agent')
+        useragent = json.loads(r.text)['user-agent']
+        headers = {'User-agent': useragent}
+
+        # Get URL for weather alerts
+
+        url = f'''https://api.weather.gov/alerts/active?status=actual&message_type=alert&point={selected_lat}%2C{selected_lon}&urgency=Immediate,Expected,Future&severity=Extreme,Severe,Moderate,Minor&certainty=Observed,Likely,Possible&limit=50'''
+
+        r = requests.get(url, headers = headers)
+        myjson = json.loads(r.text) 
+
+        df_alerts = pd.json_normalize(myjson['features'])
+
+        def make_button(df_alerts, i):
+            df_sel = df_alerts.loc[i]
+            st.button(df_sel['properties.event'], key = i, type="primary")
+                
+        if len(df_alerts) == 0:
+            st.write(':green[NO WEATHER ALERTS]')
+
+        else:
+            st.write(':red[WEATHER ALERTS]')
+            alerts_len = len(df_alerts)
+
+            for i in range(alerts_len):
+
+                make_button(df_alerts, i)
+  
+    weather_alerts(selected_lat, selected_lon)      
+
     options = st.multiselect('Select variables to plot:', ['Temperature','Prob. of Precipitation', 'Wind Speed', 
-    'Sky Cover', 'Heat Index', 'Visibility'], default = ['Temperature','Prob. of Precipitation', 'Wind Speed', 
+    'Sky Cover', 'Heat Index', 'Visibility', 'Wind Gust'], default = ['Temperature','Prob. of Precipitation', 'Wind Speed', 
                         'Sky Cover'])
         
     def weather_forecast(selected_lat, selected_lon, options):
@@ -92,7 +124,7 @@ def page1():
             fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot") 
             fig.update_layout(plot_bgcolor='white') 
 
-            fig.add_trace(go.Scatter(x=df1['startTime'], y=var_to_plot,
+            fig.add_trace(go.Scatter(x=df['startTime'], y=var_to_plot,
                                 line=dict(color=color, width=4)))
 
             st.plotly_chart(fig)
@@ -108,7 +140,6 @@ def page1():
             df2 = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
             df3 = pd.json_normalize(myjson_g['properties']['heatIndex']['values'])
             df4 = pd.json_normalize(myjson_g['properties']['windChill']['values'])
-            df5 = pd.json_normalize(myjson_g['properties']['visibility']['values'])
 
             def convert_time(var_name):
 
@@ -120,19 +151,21 @@ def page1():
             df_windgust = convert_time(df1)
             df_snowfall = convert_time(df2)
             df_heat_index = convert_time(df3)
+            df_heat_index['value'] = (df_heat_index['value'] * 9/5) + 32
             df_wind_chill = convert_time(df4)
-            df_visibility = convert_time(df5)  
         
-            return df_skycover, df_windgust, df_snowfall, df_heat_index, df_wind_chill, df_visibility
+            return df_skycover, df_windgust, df_snowfall, df_heat_index, df_wind_chill
         
-        df_skycover, df_windgust, df_snowfall, df_heat_index, df_wind_chill, df_visibility = norm_g_data(myjson_g)
+        df_skycover, df_windgust, df_snowfall, df_heat_index, df_wind_chill = norm_g_data(myjson_g)
 
-        make_hourly_plot('Skycover', 'Skycover %', df_skycover['value'], 'blue')
-        make_hourly_plot('Wind Gust', 'Wind Gust (mph)', df_windgust['value'], 'purple')
-        make_hourly_plot('visibility', 'miles', df_visibility['value'], 'grey')
-        make_hourly_plot('heatindex', 'Temperature (F)', df_heat_index['value'], 'red')
+        if 'Sky Cover' in options:
+            make_hourly_plot('Skycover', 'Skycover %', df_skycover['value'], 'blue')
+        if 'Wind Gust' in options:
+            make_hourly_plot('Wind Gust', 'Wind Gust (mph)', df_windgust['value'], 'purple')
+        if 'Heat Index' in options:
+            make_hourly_plot('Heat Index', 'Temperature (F)', df_heat_index['value'], 'red')
             
-    weather_forecast(selected_lat, selected_lon)
+    weather_forecast(selected_lat, selected_lon, options)
 
 def phone():
     st.write('bye')
