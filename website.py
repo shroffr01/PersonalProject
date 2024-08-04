@@ -19,13 +19,14 @@ pio.renderers.default = 'browser'
 st.set_page_config(layout="wide")
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-#@st.cache_data
 #def long_running_function(param1, param2):
 #    return
 
 def page1():
 
     df = pd.read_csv('person_projec_dataframe.csv')
+
+    st.header("Hourly Weather Forecast Tool")
 
     selected_city = st.selectbox("Select a city", df['city_ascii, state_id'].unique())
     st.write("Selected City:", selected_city)
@@ -36,7 +37,7 @@ def page1():
     selected_lat = selected_row['lat']
 
     selected_lon = selected_row['lng']
-
+    
     def weather_alerts(selected_lat, selected_lon):
 
         r = requests.get('https://httpbin.org/user-agent')
@@ -64,10 +65,10 @@ def page1():
                 st.write(description)
                 
         if len(df_alerts) == 0:
-            st.write(':green[NO WEATHER ALERTS]')
+            st.write(':green[**NO WEATHER ALERTS**]')
 
         else:
-            st.write(':red[WEATHER ALERTS]')
+            st.write(':red[**WEATHER ALERTS**]')
             alerts_len = len(df_alerts)
 
             for i in range(alerts_len):
