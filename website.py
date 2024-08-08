@@ -17,7 +17,7 @@ pio.renderers.default = 'browser'
 pio.renderers.default = 'browser'
 
 st.set_page_config(layout="wide")
-st.set_option('deprecation.showPyplotGlobalUse', False)
+#st.set_option('deprecation.showPyplotGlobalUse', False)
 
 #def long_running_function(param1, param2):
 #    return
