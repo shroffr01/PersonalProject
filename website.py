@@ -52,7 +52,7 @@ def page1():
         myjson = json.loads(r.text) 
 
         df_alerts = pd.json_normalize(myjson['features'])
-
+        st.write(df_alerts)
         def make_button(df_alerts, i):
             df_sel = df_alerts.loc[i]
 
