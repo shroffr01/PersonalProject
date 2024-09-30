@@ -189,13 +189,12 @@ def phone():
 
         selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
         st.write("Selected City:", selected_city1)
-        checkbox_val = st.checkbox("Form checkbox")
 
         # Every form must have a submit button.
         submitted = st.form_submit_button("Submit")
         if submitted:
-            st.write("slider", checkbox_val, "checkbox", checkbox_val)
-        st.write("Outside the form")
+            selected_starting_point = selected_city
+            selected_destination = selected_city1
 
 # Defines streamlit page names
 page_names_to_funcs = {
