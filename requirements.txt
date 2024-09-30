@@ -3,4 +3,4 @@ streamlit
 matplotlib
 plotly
 numpy
-streamlit-datetime-range-picker
+streamlit-date-picker==0.0.3
