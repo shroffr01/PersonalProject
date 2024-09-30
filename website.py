@@ -176,10 +176,19 @@ def page1():
     weather_forecast(selected_lat, selected_lon, options)
 
 def phone():
+
+    df = pd.read_csv('person_projec_dataframe.csv')
+
+    st.header("Hourly Route Planning Weather Forecast Tool")
+
     
-    with st.form("my_form"):
-        st.write("Inside the form")
-        slider_val = st.slider("Form slider")
+    with st.form("Route Weather Planner"):
+        st.write("Route Weather Planner")
+        selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
+        st.write("Selected City:", selected_city)
+
+        selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
+        st.write("Selected City:", selected_city)
         checkbox_val = st.checkbox("Form checkbox")
 
         # Every form must have a submit button.
