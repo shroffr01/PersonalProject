@@ -203,7 +203,7 @@ def phone():
         if submitted:
             selected_starting_point = selected_city
             selected_destination = selected_city1
-
+        print('hi')
 # Defines streamlit page names
 page_names_to_funcs = {
     "Weather Forecast": page1,
