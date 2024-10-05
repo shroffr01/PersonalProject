@@ -8,6 +8,8 @@ import json
 import os
 import datetime
 from datetime import datetime, timedelta
+import googlemaps
+
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -182,11 +184,12 @@ def phone():
 
     st.header("Hourly Route Planning Weather Forecast Tool")
 
-    
-    with st.form("Route Weather Planner"):
-        st.write("Route Weather Planner")
-        selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
-        st.write("Selected City:", selected_city)
+    def menu_selection():
+
+        with st.form("Route Weather Planner"):
+            st.write("Route Weather Planner")
+            selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
+            st.write("Selected City:", selected_city)
 
         selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
         st.write("Selected City:", selected_city1)
@@ -207,11 +210,53 @@ def phone():
 
         # Every form must have a submit button.
         submitted = st.form_submit_button("Submit")
+
         if submitted:
             selected_starting_point = selected_city
             selected_destination = selected_city1
             selected_departure = date_select
-        print('hi')
+
+        return selected_starting_point, selected_destination, selected_departure
+
+    selected_starting_point, selected_destination, selected_departure = menu_selection() 
+
+    def route_info(selected_starting_point, selected_destination, selected_departure):
+        
+        selected_departure = selected_departure.to_datetime()
+
+        api_key_google = os.getenv('api_key') 
+        gmaps = googlemaps.Client(key=api_key_google)
+
+        params = {
+        'origin': selected_starting_point,
+        'destination': selected_destination,
+        'mode': 'driving',  # You can change this to 'walking', 'bicycling', or 'transit'
+        'alternatives': True,  # If you want alternative routes
+        'avoid': None,  # You can specify features to avoid, e.g., 'tolls', 'highways'
+        'language': 'en',  # Language for the results
+        'units': 'imperial',  # Use 'metric' for metric units
+        'departure_time': selected_departure,  # Use the current time as the departure time
+    }
+
+        # Fetch directions
+        directions = gmaps.directions(**params)
+
+        route_df = pd.json_normalize(directions[0], record_path=['legs', 'steps'])
+        route_df['time_in_minutes'] = route_df['duration.text'].str.extract('(\d+)').astype(int)
+        route_df['cumulative_time'] = route_df['time_in_minutes'].cumsum()
+        route_df[['end_location.lat', 'end_location.lng', 'cumulative_time']]
+
+        max_time = route_df['cumulative_time'].iloc[(len(route_df)-1)]
+        desired_val = list(range(0,max_time+60, 60))
+        closest_rows = (route_df.loc[[abs(route_df['cumulative_time'] - hour).idxmin() for hour in desired_val]]).reset_index()
+
+        st.text(closest_rows)
+
+
+
+
+
+    route_info(selected_starting_point, selected_destination, selected_departure)
 # Defines streamlit page names
 page_names_to_funcs = {
     #"Weather Forecast": page1,
