@@ -202,11 +202,15 @@ def phone():
             t_mod = t.strftime("%Y-%m-%d-%H")
             times.append(t_mod)
 
+        date_select = st.selectbox("Select a departure time", times)
+        st.write("Selected Departure Time:", date_select)
+
         # Every form must have a submit button.
         submitted = st.form_submit_button("Submit")
         if submitted:
             selected_starting_point = selected_city
             selected_destination = selected_city1
+            selected_departure = date_select
         print('hi')
 # Defines streamlit page names
 page_names_to_funcs = {
