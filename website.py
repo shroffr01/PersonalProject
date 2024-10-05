@@ -7,7 +7,7 @@ import requests
 import json
 import os
 import datetime
-
+from datetime import datetime, timedelta
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -191,11 +191,16 @@ def phone():
         selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
         st.write("Selected City:", selected_city1)
 
-        datetime_string = datetime_range_picker(start=-30, end=0, unit='minutes', key='range_picker', 
-                                        picker_button={'is_show': True, 'button_name': 'Refresh last 30min'})
-        if datetime_string is not None:
-            start_datetime = datetime_string[0]
-            end_datetime = datetime_string[1]
+        # date selection 
+        today = datetime.now()
+        simplified_today = today.replace(minute=0, second=0, microsecond=0)
+
+        times = []
+
+        for i in range(72):
+            t = simplified_today + timedelta(hours=i)
+            t_mod = t.strftime("%Y-%m-%d-%H")
+            times.append(t_mod)
 
         # Every form must have a submit button.
         submitted = st.form_submit_button("Submit")
@@ -205,7 +210,7 @@ def phone():
         print('hi')
 # Defines streamlit page names
 page_names_to_funcs = {
-    "Weather Forecast": page1,
+    #"Weather Forecast": page1,
     "test2": phone
 }
 
