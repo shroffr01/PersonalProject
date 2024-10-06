@@ -256,11 +256,8 @@ def phone():
 
         st.text(closest_rows)
 
-
-
-
-
-    route_info(selected_starting_point, selected_destination, selected_departure)
+    if selected_starting_point != None:
+        route_info(selected_starting_point, selected_destination, selected_departure)
 # Defines streamlit page names
 page_names_to_funcs = {
     #"Weather Forecast": page1,
