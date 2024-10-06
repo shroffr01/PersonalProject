@@ -191,25 +191,25 @@ def phone():
             selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
             st.write("Selected City:", selected_city)
 
-        selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
-        st.write("Selected City:", selected_city1)
+            selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
+            st.write("Selected City:", selected_city1)
 
-        # date selection 
-        today = datetime.now()
-        simplified_today = today.replace(minute=0, second=0, microsecond=0)
+            # date selection 
+            today = datetime.now()
+            simplified_today = today.replace(minute=0, second=0, microsecond=0)
 
-        times = []
+            times = []
 
-        for i in range(72):
-            t = simplified_today + timedelta(hours=i)
-            t_mod = t.strftime("%Y-%m-%d %I %p")
-            times.append(t_mod)
+            for i in range(72):
+                t = simplified_today + timedelta(hours=i)
+                t_mod = t.strftime("%Y-%m-%d %I %p")
+                times.append(t_mod)
 
-        date_select = st.selectbox("Select a departure time", times)
-        st.write("Selected Departure Time:", date_select)
+            date_select = st.selectbox("Select a departure time", times)
+            st.write("Selected Departure Time:", date_select)
 
-        # Every form must have a submit button.
-        submitted = st.form_submit_button("Submit")
+            # Every form must have a submit button.
+            submitted = st.form_submit_button("Submit")
 
         if submitted:
             selected_starting_point = selected_city
