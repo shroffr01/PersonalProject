@@ -9,6 +9,8 @@ import os
 import datetime
 from datetime import datetime, timedelta
 import googlemaps
+import dotenv 
+
 
 
 import plotly.express as px
@@ -227,7 +229,8 @@ def phone():
     def route_info(selected_starting_point, selected_destination, selected_departure):
         
         selected_departure = datetime.strptime(selected_departure, "%Y-%m-%d %I %p")
-
+        
+        dotenv.load_dotenv()
         api_key_google = os.getenv('api_key') 
         gmaps = googlemaps.Client(key=api_key_google)
 
@@ -258,6 +261,7 @@ def phone():
 
     if selected_starting_point != None:
         route_info(selected_starting_point, selected_destination, selected_departure)
+        
 # Defines streamlit page names
 page_names_to_funcs = {
     #"Weather Forecast": page1,
