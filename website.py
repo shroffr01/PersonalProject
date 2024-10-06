@@ -211,6 +211,10 @@ def phone():
             # Every form must have a submit button.
             submitted = st.form_submit_button("Submit")
 
+            selected_starting_point = None
+            selected_destination = None
+            selected_departure = None
+            
         if submitted:
             selected_starting_point = selected_city
             selected_destination = selected_city1
