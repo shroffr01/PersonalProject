@@ -214,7 +214,7 @@ def phone():
             selected_starting_point = None
             selected_destination = None
             selected_departure = None
-            
+
         if submitted:
             selected_starting_point = selected_city
             selected_destination = selected_city1
@@ -226,7 +226,7 @@ def phone():
 
     def route_info(selected_starting_point, selected_destination, selected_departure):
         
-        selected_departure = selected_departure.to_datetime()
+        selected_departure = datetime.strptime(selected_departure, "%Y-%m-%d %I %p")
 
         api_key_google = os.getenv('api_key') 
         gmaps = googlemaps.Client(key=api_key_google)
