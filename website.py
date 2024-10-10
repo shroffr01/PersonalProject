@@ -244,7 +244,13 @@ def phone():
     }
 
         # Fetch directions
-        directions = gmaps.directions(**params)
+        #directions = gmaps.directions(**params)
+
+        try:
+            directions = gmaps.directions(**params)
+        except googlemaps.exceptions.ApiError as e:
+            st.error(f"Google Maps API Error: {e}")
+            return
 
         route_df = pd.json_normalize(directions[0], record_path=['legs', 'steps'])
         route_df['time_in_minutes'] = route_df['duration.text'].str.extract('(\d+)').astype(int)
