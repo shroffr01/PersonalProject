@@ -259,7 +259,7 @@ def phone():
 
         route_df[['end_location.lat', 'end_location.lng', 'cumulative_time', 'date_time']]
 
-
+        st.text(route_df)
         max_time = route_df['cumulative_time'].iloc[(len(route_df)-1)]
         desired_val = list(range(0,max_time+60, 60))
         closest_rows = (route_df.loc[[abs(route_df['cumulative_time'] - hour).idxmin() for hour in desired_val]]).reset_index()
