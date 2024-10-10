@@ -4,4 +4,4 @@ matplotlib
 plotly
 numpy
 googlemaps
-
+dotenv
