@@ -8,7 +8,7 @@ import os
 import datetime
 from datetime import datetime, timedelta
 import googlemaps
-# hi
+import dotenv
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -198,7 +198,7 @@ def phone():
 
             times = []
 
-            for i in range(72):
+            for i in range(1,72):
                 t = simplified_today + timedelta(hours=i)
                 t_mod = t.strftime("%Y-%m-%d %I %p")
                 times.append(t_mod)
