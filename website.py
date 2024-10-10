@@ -1,6 +1,5 @@
 
 import streamlit as st
-import numpy as np
 import pandas as pd
 import numpy as np
 import requests
@@ -9,7 +8,6 @@ import os
 import datetime
 from datetime import datetime, timedelta
 import googlemaps
-import dotenv 
 
 import plotly.express as px
 import plotly.graph_objects as go
