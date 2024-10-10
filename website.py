@@ -255,7 +255,10 @@ def phone():
         route_df = pd.json_normalize(directions[0], record_path=['legs', 'steps'])
         route_df['time_in_minutes'] = route_df['duration.text'].str.extract('(\d+)').astype(int)
         route_df['cumulative_time'] = route_df['time_in_minutes'].cumsum()
-        route_df[['end_location.lat', 'end_location.lng', 'cumulative_time']]
+        route_df['date_time'] = route_df['cumulative_time'].apply(lambda x: selected_departure + timedelta(minutes=x))
+
+        route_df[['end_location.lat', 'end_location.lng', 'cumulative_time', 'date_time']]
+
 
         max_time = route_df['cumulative_time'].iloc[(len(route_df)-1)]
         desired_val = list(range(0,max_time+60, 60))
