@@ -243,9 +243,6 @@ def phone():
         'departure_time': selected_departure,  # Use the current time as the departure time
     }
 
-        # Fetch directions
-        #directions = gmaps.directions(**params)
-
         try:
             directions = gmaps.directions(**params)
         except googlemaps.exceptions.ApiError as e:
@@ -253,22 +250,30 @@ def phone():
             return
 
         route_df = pd.json_normalize(directions[0], record_path=['legs', 'steps'])
-        st.text(route_df['duration.text'])
-        route_df['time_in_minutes'] = route_df['duration.text'].str.extract('(\d+)').astype(int)
+
+        route_df['time_in_minutes'] = round(route_df['duration.value']/60, 0)
+        route_df['time_in_minutes'] = route_df['time_in_minutes'].astype('int')
         route_df['cumulative_time'] = route_df['time_in_minutes'].cumsum()
+
         route_df['date_time'] = route_df['cumulative_time'].apply(lambda x: selected_departure + timedelta(minutes=x))
+        route_df['date_time'] = route_df['date_time'].apply(lambda x: x.replace(minute=0, second=0, microsecond=0))
+
+        max_time = route_df['cumulative_time'].iloc[(len(route_df)-1)]
+        desired_val = list(range(0,max_time+60, 60))
 
         route_df[['end_location.lat', 'end_location.lng', 'cumulative_time', 'date_time']]
 
-        st.text(route_df)
-        max_time = route_df['cumulative_time'].iloc[(len(route_df)-1)]
-        desired_val = list(range(0,max_time+60, 60))
         closest_rows = (route_df.loc[[abs(route_df['cumulative_time'] - hour).idxmin() for hour in desired_val]]).reset_index()
-
         st.text(closest_rows)
 
+        return closest_rows
+
     if selected_starting_point != None:
-        route_info(selected_starting_point, selected_destination, selected_departure)
+        route_info_df = route_info(selected_starting_point, selected_destination, selected_departure)
+
+    def collect_weather_data():
+        print('hi')
+    
         
 # Defines streamlit page names
 page_names_to_funcs = {
