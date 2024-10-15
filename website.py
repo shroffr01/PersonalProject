@@ -200,7 +200,7 @@ def phone():
 
             times = []
 
-            for i in range(1,72):
+            for i in range(1,24):
                 t = simplified_today + timedelta(hours=i)
                 t_mod = t.strftime("%Y-%m-%d %I %p")
                 times.append(t_mod)
