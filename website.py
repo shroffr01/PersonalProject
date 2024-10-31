@@ -188,7 +188,7 @@ def phone():
 
         with st.form("Route Weather Planner"):
             st.write("Route Weather Planner")
-            selected_city = st.selectbox("Select a starting point", df['city_ascii,, state_id'].unique())
+            selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
             st.write("Selected City:", selected_city)
 
             selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
