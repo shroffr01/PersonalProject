@@ -220,56 +220,75 @@ def phone():
             selected_destination = selected_city1
             selected_departure = date_select
 
-        return selected_starting_point, selected_destination, selected_departure
+        df['city_state'] = df['city_ascii, state_id']
 
-    selected_starting_point, selected_destination, selected_departure = menu_selection() 
+        start_coord = df.query('city_state == @selected_city')
+        start_lat = float(start_coord['lat'].iloc[0])
+        start_lon = float(start_coord['lng'].iloc[0])
 
-    def route_info(selected_starting_point, selected_destination, selected_departure):
+        end_coord = df.query('city_state == @selected_city1')
+        end_lat = float(end_coord['lat'].iloc[0])
+        end_lon = float(end_coord['lng'].iloc[0])
+
+        return selected_starting_point, selected_destination, selected_departure, start_lat, start_lon,end_lat,end_lon
+
+    selected_starting_point, selected_destination, selected_departure, start_lat, start_lon, end_lat, end_lon = menu_selection() 
+
+    def route_info(selected_starting_point, selected_destination, selected_departure, start_lat, start_lng, end_lat, end_lng):
         
-        selected_departure = datetime.strptime(selected_departure, "%Y-%m-%d %I %p")
-        
-        dotenv.load_dotenv()
-        api_key_google = os.getenv('api_key') 
-        gmaps = googlemaps.Client(key=api_key_google)
+        MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A'
 
+        selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %I %p")
+    
+        start_point = [start_lon, start_lat] 
+        end_point = [end_lon, end_lat] 
+
+        url = f"https://api.mapbox.com/directions/v5/mapbox/driving/{start_point[0]},{start_point[1]};{end_point[0]},{end_point[1]}"
         params = {
-        'origin': selected_starting_point,
-        'destination': selected_destination,
-        'mode': 'driving',  # You can change this to 'walking', 'bicycling', or 'transit'
-        'alternatives': True,  # If you want alternative routes
-        'avoid': None,  # You can specify features to avoid, e.g., 'tolls', 'highways'
-        'language': 'en',  # Language for the results
-        'units': 'imperial',  # Use 'metric' for metric units
-        'departure_time': selected_departure,  
-    }
+            'geometries': 'geojson',
+            'overview': 'full',
+            'steps': 'true',
+            'access_token': MAPBOX_ACCESS_TOKEN,
+            'depart_at': selected_departure_time
+        }
 
-        try:
-            directions = gmaps.directions(**params)
-        except googlemaps.exceptions.ApiError as e:
-            st.error(f"Google Maps API Error: {e}")
-            return
+        response = requests.get(url, params=params)
+        data = response.json()
 
-        route_df = pd.json_normalize(directions[0], record_path=['legs', 'steps'])
+        # Parse the response to get duration and coordinates
+        route = data['routes'][0]
+        total_duration = route['duration']  # Total duration in seconds
+        interval = 3600  # 60 minutes in seconds
 
-        route_df['time_in_minutes'] = round(route_df['duration.value']/60, 0)
-        route_df['time_in_minutes'] = route_df['time_in_minutes'].astype('int')
-        route_df['cumulative_time'] = route_df['time_in_minutes'].cumsum()
+        coordinates_every_60 = []
+        current_time = 0
 
-        route_df['date_time'] = route_df['cumulative_time'].apply(lambda x: selected_departure + timedelta(minutes=x))
-        route_df['date_time'] = route_df['date_time'].apply(lambda x: x.replace(minute=0, second=0, microsecond=0))
+        for leg in route['legs']:
+            for step in leg['steps']:
+                
+                step_duration = step['duration']
+                step_coords = step['geometry']['coordinates']
+                
+                for i, coord in enumerate(step_coords):
+                    # Calculate cumulative travel time to this point
+                    cumulative_time = current_time + (step_duration / len(step_coords)) * i
+                    
+                    # If the cumulative time is close to the next interval, add the coordinate
+                    if cumulative_time >= interval * len(coordinates_every_60):
+                        coordinates_every_60.append({
+                            'lat': coord[1],
+                            'lon': coord[0],
+                            'time': str(datetime.timedelta(seconds=cumulative_time))
+                        })
+                
+                current_time += step_duration  # Update time for the next step
 
-        max_time = route_df['cumulative_time'].iloc[(len(route_df)-1)]
-        desired_val = list(range(0,max_time+60, 60))
+        closest_rows = pd.dataframe(coordinates_every_60)
+        st.text(closest_rows)
 
-        route_df[['end_location.lat', 'end_location.lng', 'cumulative_time', 'date_time']]
-
-        closest_rows = (route_df.loc[[abs(route_df['cumulative_time'] - hour).idxmin() for hour in desired_val]]).reset_index()
-        #st.text(closest_rows)
-
-        return closest_rows
 
     if selected_starting_point != None:
-        route_info_df = route_info(selected_starting_point, selected_destination, selected_departure)
+        route_info_df = route_info(selected_starting_point, selected_destination, selected_departure, start_lat, start_lon, end_lat, end_lon)
 
     def collect_weather_data():
         print('hi')
