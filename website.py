@@ -319,8 +319,8 @@ def phone():
             //directions.setDestination([-77.42824,38.89672]);
 
             map.on('load', () => {{
-            directions.setOrigin({selected_starting_point}');
-            directions.setDestination({selected_destination});
+            directions.setOrigin(`${{selected_starting_point}}`);
+            directions.setDestination(`${{selected_destination}});
             directions.query();
             }});
 
