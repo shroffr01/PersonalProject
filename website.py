@@ -273,6 +273,72 @@ def phone():
 
     def collect_weather_data():
         print('hi')
+
+    def map_plot(selected_starting_point, selected_destination):
+        
+        html_code = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="utf-8">
+        <title>Display navigation directions</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+        <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+        <style>
+        html, body {{ margin: 0; padding: 0; }}
+        #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
+        </style>
+        </head>
+        <body>
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
+        <div id="map"></div>
+
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
+            const map = new mapboxgl.Map({{
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v12',
+                center: [-79.4512, 43.6568],
+                zoom: 4
+            }});
+
+            // Initialize the MapboxDirections control with driving only
+            const directions = new MapboxDirections({{
+                accessToken: mapboxgl.accessToken,
+                profile: 'mapbox/driving',
+                controls: {{profileSwitcher: false}}
+            }});
+
+            // Add the directions control to the map
+            map.addControl(directions, 'top-left');
+
+            // Set origin and destination
+            //directions.setOrigin([-77.99233,38.33267]);
+            //directions.setDestination([-77.42824,38.89672]);
+
+            map.on('load', () => {{
+            directions.setOrigin('Richmond, VA');
+            directions.setDestination('Kansas, MO');
+            directions.query();
+            }});
+
+            // Immediately call query() after setting both points to render the route
+            directions.query();
+
+        </script>
+
+        </body>
+        </html>
+        """
+
+        st.components.v1.html(html_code, height=600, scrolling=False)
+
+
+    if selected_starting_point != None: 
+        map_plot(selected_starting_point, selected_destination)
+        
     
         
 # Defines streamlit page names
