@@ -220,8 +220,6 @@ def phone():
             selected_destination = selected_city1
             selected_departure = date_select
 
-            start_lat = df.query('city_ascii, state_id' == selected_city)
-
         return selected_starting_point, selected_destination, selected_departure
 
     selected_starting_point, selected_destination, selected_departure = menu_selection() 
