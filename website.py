@@ -188,7 +188,7 @@ def phone():
 
         with st.form("Route Weather Planner"):
             st.write("Route Weather Planner")
-            selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
+            selected_city = st.selectbox("Select a starting point", df['city_ascii,, state_id'].unique())
             st.write("Selected City:", selected_city)
 
             selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
@@ -220,6 +220,8 @@ def phone():
             selected_destination = selected_city1
             selected_departure = date_select
 
+            start_lat = df.query('city_ascii, state_id' == selected_city)
+
         return selected_starting_point, selected_destination, selected_departure
 
     selected_starting_point, selected_destination, selected_departure = menu_selection() 
@@ -240,7 +242,7 @@ def phone():
         'avoid': None,  # You can specify features to avoid, e.g., 'tolls', 'highways'
         'language': 'en',  # Language for the results
         'units': 'imperial',  # Use 'metric' for metric units
-        'departure_time': selected_departure,  # Use the current time as the departure time
+        'departure_time': selected_departure,  
     }
 
         try:
