@@ -284,6 +284,7 @@ def phone():
                 current_time += step_duration  # Update time for the next step
 
         closest_rows = pd.dataframe(coordinates_every_60)
+        st.text('hi')
         st.text(closest_rows)
 
 
