@@ -277,7 +277,7 @@ def phone():
                         coordinates_every_60.append({
                             'lat': coord[1],
                             'lon': coord[0],
-                            'time': str(datetime.timedelta(seconds=cumulative_time))
+                            'time': str(timedelta(seconds=cumulative_time))
                         })
                 
                 current_time += step_duration  # Update time for the next step
