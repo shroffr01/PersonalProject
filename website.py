@@ -5,7 +5,6 @@ import numpy as np
 import requests
 import json
 import os
-import datetime
 from datetime import datetime, timedelta
 import googlemaps
 
