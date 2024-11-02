@@ -303,6 +303,7 @@ def phone():
 
         closest_rows['date_time'] = closest_rows['time'].apply(lambda x: selected_departure + timedelta(minutes=x))
         st.text(closest_rows)
+        
     if selected_starting_point != None:
         route_info_df = route_info(selected_departure, start_lat, start_lon, end_lat, end_lon)
 
