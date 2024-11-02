@@ -238,7 +238,7 @@ def phone():
         MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A'
 
         selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
-        st.text(selected_departure_time)
+        st_string=str(selected_departure_time)
         start_point = [start_lon, start_lat] 
         end_point = [end_lon, end_lat] 
 
@@ -247,7 +247,7 @@ def phone():
             'geometries': 'geojson',
             'overview': 'full',
             'steps': 'true',
-            'depart_at': selected_departure_time,
+            'depart_at': st_string,
             'access_token': MAPBOX_ACCESS_TOKEN,
         }
 
