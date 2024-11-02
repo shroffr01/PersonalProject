@@ -201,7 +201,7 @@ def phone():
 
             for i in range(1,24):
                 t = simplified_today + timedelta(hours=i)
-                t_mod = t.strftime("%Y-%m-%d %I %p")
+                t_mod = t.strftime("%Y-%m-%d %H:%M")
                 times.append(t_mod)
 
             date_select = st.selectbox("Select a departure time", times)
