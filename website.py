@@ -295,11 +295,9 @@ def phone():
         closest_rows = pd.DataFrame(coordinates_every_60)
         
         selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M")
-
-        a = selected_departure_time + timedelta(hours=3)
-        st.text(a)
         
         st.text(closest_rows)
+        st.text(closest_rows.columns)
         # convert time column to datetime and then minutes
         closest_rows['time'] = pd.to_datetime(closest_rows['time'], format='%H:%M:%S.%f')
         closest_rows['time'] = closest_rows['time'].dt.hour * 60 + closest_rows['time'].dt.minute
