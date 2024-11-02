@@ -237,7 +237,7 @@ def phone():
         
         MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A'
 
-        selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M")
+        selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
     
         start_point = [start_lon, start_lat] 
         end_point = [end_lon, end_lat] 
