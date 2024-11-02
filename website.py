@@ -250,8 +250,8 @@ def phone():
             'geometries': 'geojson',
             'overview': 'full',
             'steps': 'true',
-            'depart_at': st_string,
-            'access_token': MAPBOX_ACCESS_TOKEN,
+            #'depart_at': st_string,
+            'access_token': MAPBOX_ACCESS_TOKEN
         }
 
         response = requests.get(url, params=params)
