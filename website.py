@@ -299,7 +299,7 @@ def phone():
         st.text(closest_rows)
         st.text(closest_rows.columns)
         # convert time column to datetime and then minutes
-        closest_rows['time'] = pd.to_datetime(closest_rows['time'], format='%H:%M:%S.%f')
+        closest_rows['time'] = pd.to_datetime(closest_rows['time'], format='%H:%M:%S.%f', errors='coerce')
         closest_rows['time'] = closest_rows['time'].dt.hour * 60 + closest_rows['time'].dt.minute
         st.text(closest_rows)
         #closest_rows['datetime'] = closest_rows['']
