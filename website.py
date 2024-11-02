@@ -303,12 +303,22 @@ def phone():
 
         closest_rows['date_time'] = closest_rows['time'].apply(lambda x: selected_departure_time + timedelta(minutes=x))
         closest_rows = closest_rows[['lat','lon','date_time']]
+        st.text(closest_rows)
+        return closest_rows
 
     if selected_starting_point != None:
         route_info_df = route_info(selected_departure, start_lat, start_lon, end_lat, end_lon)
 
-    def collect_weather_data():
-        print('hi')
+    def collect_weather_data(route_info_df):
+        
+        temp_list = []
+        precip_chance_list = []
+        wind_speed_list = []
+        skycover_list = []
+        snowfall_list = []
+        windgust_list = []
+    
+    collect_weather_data(route_info_df)
 
     def map_plot(selected_starting_point, selected_destination):
         
