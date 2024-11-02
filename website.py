@@ -300,6 +300,11 @@ def phone():
         st.text(a)
         
         st.text(closest_rows)
+        # convert time column to datetime and then minutes
+        closest_rows['time'] = pd.to_datetime(df['time'], format='%H:%M:%S.%f')
+        closest_rows['time'] = closest_rows['time'].dt.hour * 60 + closest_rows['time'].dt.minute
+        st.text(closest_rows)
+        #closest_rows['datetime'] = closest_rows['']
 
     if selected_starting_point != None:
         route_info_df = route_info(selected_departure, start_lat, start_lon, end_lat, end_lon)
