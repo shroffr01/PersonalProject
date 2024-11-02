@@ -233,15 +233,15 @@ def phone():
 
     selected_starting_point, selected_destination, selected_departure, start_lat, start_lon, end_lat, end_lon = menu_selection() 
 
-    def route_info(selected_starting_point, selected_destination, selected_departure, start_lat, start_lng, end_lat, end_lng):
+    def route_info(selected_departure, start_lat, start_lon, end_lat, end_lon):
         
         MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A'
 
         selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
-        st_string=str(selected_departure_time)
+        #st_string=str(selected_departure_time)
 
-        st.text(st_string)
-        st.text(type(st_string))
+        #st.text(st_string)
+        #st.text(type(st_string))
         start_point = [start_lon, start_lat] 
         end_point = [end_lon, end_lat] 
 
@@ -259,7 +259,6 @@ def phone():
 
         # Parse the response to get duration and coordinates
         route = data['routes'][0]
-        total_duration = route['duration']  # Total duration in seconds
         interval = 3600  # 60 minutes in seconds
 
         coordinates_every_60 = []
@@ -294,11 +293,13 @@ def phone():
         })
 
         closest_rows = pd.DataFrame(coordinates_every_60)
+        closest_rows['datetime'] = closest_rows['time'] + selected_departure_time
+
         
         st.text(closest_rows)
 
     if selected_starting_point != None:
-        route_info_df = route_info(selected_starting_point, selected_destination, selected_departure, start_lat, start_lon, end_lat, end_lon)
+        route_info_df = route_info(selected_departure, start_lat, start_lon, end_lat, end_lon)
 
     def collect_weather_data():
         print('hi')
