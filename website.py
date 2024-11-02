@@ -285,10 +285,17 @@ def phone():
                 
                 current_time += step_duration  # Update time for the next step
 
-        closest_rows = pd.DataFrame(coordinates_every_60)
-        st.text('hi')
-        st.text(closest_rows)
+        final_coord = step_coords[-1]  # Last coordinate in the final step
 
+        coordinates_every_60.append({
+        'lat': final_coord[1],
+        'lon': final_coord[0],
+        'time': str(timedelta(seconds=current_time))  # Total cumulative travel time
+        })
+
+        closest_rows = pd.DataFrame(coordinates_every_60)
+        
+        st.text(closest_rows)
 
     if selected_starting_point != None:
         route_info_df = route_info(selected_starting_point, selected_destination, selected_departure, start_lat, start_lon, end_lat, end_lon)
