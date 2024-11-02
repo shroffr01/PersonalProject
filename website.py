@@ -296,15 +296,13 @@ def phone():
         
         selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M")
         
-        st.text(closest_rows)
-        st.text(closest_rows.columns)
         # convert time column to datetime and then minutes
         closest_rows['time'] = pd.to_datetime(closest_rows['time'], format='%H:%M:%S.%f', errors='coerce')
         closest_rows['time'] = closest_rows['time'].dt.hour * 60 + closest_rows['time'].dt.minute
         closest_rows['time'] = closest_rows['time'].fillna(0)
-        st.text(closest_rows)
-        #closest_rows['datetime'] = closest_rows['']
 
+        closest_rows['date_time'] = closest_rows['time'].apply(lambda x: selected_departure + timedelta(minutes=x))
+        st.text(closest_rows)
     if selected_starting_point != None:
         route_info_df = route_info(selected_departure, start_lat, start_lon, end_lat, end_lon)
 
