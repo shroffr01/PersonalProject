@@ -247,8 +247,8 @@ def phone():
             'geometries': 'geojson',
             'overview': 'full',
             'steps': 'true',
-            'access_token': MAPBOX_ACCESS_TOKEN,
-            'depart_at': selected_departure_time
+            'access_token': MAPBOX_ACCESS_TOKEN
+            #'depart_at': selected_departure_time
         }
 
         response = requests.get(url, params=params)
