@@ -304,7 +304,7 @@ def phone():
         closest_rows['date_time'] = closest_rows['time'].apply(lambda x: selected_departure_time + timedelta(minutes=x))
         closest_rows = closest_rows[['lat','lon','date_time']]
         closest_rows['date_time'] = closest_rows['date_time'].dt.round('H').dt.hour
-        
+        st.text(closest_rows)
         return closest_rows
 
     if selected_starting_point != None:
