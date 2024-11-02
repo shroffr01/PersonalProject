@@ -293,11 +293,10 @@ def phone():
         })
 
         closest_rows = pd.DataFrame(coordinates_every_60)
-        st.text(type(selected_departure))
-        st.text(selected_departure)
-        selected_departure = datetime.strptime(selected_departure)
-        st.text(type(selected_departure))
-        a = selected_departure + timedelta(hours=3)
+        
+        selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M")
+
+        a = selected_departure_time + timedelta(hours=3)
         st.text(a)
         
         st.text(closest_rows)
