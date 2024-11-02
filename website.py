@@ -237,7 +237,7 @@ def phone():
         
         MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A'
 
-        selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
+        #selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
         #st_string=str(selected_departure_time)
 
         #st.text(st_string)
@@ -293,8 +293,8 @@ def phone():
         })
 
         closest_rows = pd.DataFrame(coordinates_every_60)
-        closest_rows['datetime'] = selected_departure_time + timedelta(hours=closest_rows['time'])
-
+        a = selected_departure + timedelta(hours=3)
+        st.text(a)
         
         st.text(closest_rows)
 
