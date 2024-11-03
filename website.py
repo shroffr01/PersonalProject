@@ -177,7 +177,7 @@ def page1():
             
     weather_forecast(selected_lat, selected_lon, options)
 
-def phone():
+def route_planner():
 
     df = pd.read_csv('person_projec_dataframe.csv')
 
@@ -304,13 +304,17 @@ def phone():
         closest_rows['date_time'] = closest_rows['time'].apply(lambda x: selected_departure_time + timedelta(minutes=x))
         closest_rows = closest_rows[['lat','lon','date_time']]
         closest_rows['date_time'] = closest_rows['date_time'].dt.round('H')
-        st.text(closest_rows)
+        
         return closest_rows
 
     if selected_starting_point != None:
         route_info_df = route_info(selected_departure, start_lat, start_lon, end_lat, end_lon)
 
     def collect_weather_data(route_info_df):
+
+        r = requests.get('https://httpbin.org/user-agent')
+        useragent = json.loads(r.text)['user-agent']
+        headers = {'User-agent': useragent}
         
         temp_list = []
         precip_chance_list = []
@@ -318,8 +322,99 @@ def phone():
         skycover_list = []
         snowfall_list = []
         windgust_list = []
+
+        for i in range(len(route_info_df)):
+
+            desired_val = [route_info_df['date_time'][i]]
+
+            url = f"https://api.weather.gov/points/{route_info_df['lat'][i]},{route_info_df['lon'][i]}"
+            r = requests.get(url, headers = headers)
+
+            myjson = json.loads(r.text)
+            df_url_info = pd.json_normalize(myjson['properties'])
+
+            hourlyURL = df_url_info['forecastHourly'].iloc[0]   
+            hourlyURL_grid = df_url_info['forecastGridData'].iloc[0] 
+
+            # Obtain actual hourly forecast data
+
+            r = requests.get(hourlyURL, headers = headers)
+            r_g = requests.get(hourlyURL_grid, headers = headers)
+
+            myjson = json.loads(r.text)
+            myjson_g = json.loads(r_g.text)
+
+            df = pd.json_normalize(myjson['properties']['periods'])
+            df['startTime'] = pd.to_datetime(df['startTime']).dt.tz_localize(None)
+
+            df = (df.loc[[abs(df['startTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
+
+            df_temp = df['temperature']
+            df_pop = df['probabilityOfPrecipitation.value']
+            df_ws = df['windSpeed']
+
+            temp_list.append(df_temp)
+            precip_chance_list.append(df_pop)
+            wind_speed_list.append(df_ws)
+
+            # Obtain actual hourly forecast data from grid forecast
+
+            df_sky = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
+            df_wg = pd.json_normalize(myjson_g['properties']['windGust']['values'])
+            df_snow = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
+            
+        def convert_time_select_closest_row(var_name):
+
+            var_name['validTime'] = var_name['validTime'].str.extract(r'^(.*?)/')
+            var_name['validTime'] = pd.to_datetime(var_name['validTime'])
+            var_name['validTime'] = var_name['validTime'].dt.tz_localize(None)
+
+
+            df_ab = (var_name.loc[[abs(var_name['validTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
+
+            return df_ab
     
-    collect_weather_data(route_info_df)
+        df_skycover = convert_time_select_closest_row(df_sky)
+        df_skycover = df_skycover['value']
+
+        df_snowfall = convert_time_select_closest_row(df_snow)
+        df_snowfall = df_snowfall['value']
+
+        df_windgust = convert_time_select_closest_row(df_wg)
+        df_windgust = df_windgust['value']
+
+
+        skycover_list.append(df_skycover)
+        snowfall_list.append(df_snowfall)
+        windgust_list.append(df_windgust)
+
+
+        temp_list = np.array(temp_list)
+
+        precip_chance_list = np.array(precip_chance_list)
+
+        wind_speed_list = np.array(wind_speed_list)
+        wind_speed_list = wind_speed_list.flatten()
+
+        skycover_list = np.array(skycover_list)
+        skycover_list = skycover_list.flatten()
+
+        snowfall_list = np.array(snowfall_list)
+        snowfall_list = snowfall_list.flatten()
+
+        windgust_list = np.array(windgust_list)
+
+        route_info_df['temp'] = temp_list
+        route_info_df['precip'] = precip_chance_list
+        route_info_df['ws'] = wind_speed_list
+        route_info_df['skycover'] = skycover_list
+        route_info_df['snowfall'] = snowfall_list
+        route_info_df['wg'] = windgust_list
+
+        return route_info_df
+    
+    if selected_starting_point != None:
+        weather_data = collect_weather_data(route_info_df)
 
     def map_plot(selected_starting_point, selected_destination):
         
@@ -391,7 +486,7 @@ def phone():
 # Defines streamlit page names
 page_names_to_funcs = {
     #"Weather Forecast": page1,
-    "test2": phone
+    "Route Planner": route_planner
 }
 
 # Initializes streamlit sidebar to select desired page
