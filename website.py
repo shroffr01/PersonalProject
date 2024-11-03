@@ -324,7 +324,7 @@ def route_planner():
         windgust_list = []
 
         for i in range(len(route_info_df)):
-
+            st.text(route_info_df)
             desired_val = [route_info_df['date_time'][i]]
 
             url = f"https://api.weather.gov/points/{route_info_df['lat'][i]},{route_info_df['lon'][i]}"
@@ -413,8 +413,8 @@ def route_planner():
 
         return route_info_df
     
-    if selected_starting_point != None:
-        weather_data = collect_weather_data(route_info_df)
+    #if selected_starting_point != None:
+        #weather_data = collect_weather_data(route_info_df)
 
     def map_plot(selected_starting_point, selected_destination):
         
