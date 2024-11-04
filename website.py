@@ -414,7 +414,9 @@ def route_planner():
     
     if selected_starting_point != None:
         weather_data = collect_weather_data(route_info_df)
-        st.text(weather_data)
+    
+    st.text(weather_data)
+
     weather_json_df = weather_data[['lat', 'lon', 'datetime', 'temp', 'precip', 'ws', 'skycover', 'snowfall', 'wg']].to_dict(orient='records')
     weather_json = json.dumps(weather_json_df)
 
