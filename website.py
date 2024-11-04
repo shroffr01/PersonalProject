@@ -414,7 +414,9 @@ def route_planner():
     
     if selected_starting_point != None:
         weather_data = collect_weather_data(route_info_df)
-        st.dataframe(weather_data)
+        
+    weather_json_df = weather_data[['lat', 'lon', 'datetime', 'temp', 'precip', 'ws', 'skycover', 'snowfall', 'wg']].to_dict(orient='records')
+    weather_json = json.dumps(weather_json_df)
 
     def map_plot(selected_starting_point, selected_destination):
         
@@ -468,6 +470,23 @@ def route_planner():
 
             // Immediately call query() after setting both points to render the route
             directions.query();
+
+            // Weather data
+            
+            const weatherData = {{weather_json}};
+
+            // Add weather markers
+            weatherData.forEach(data => {{
+                const marker = new mapboxgl.Marker()
+                    .setLngLat([data.lon, data.lat])
+                    .setPopup(new mapboxgl.Popup({{ offset: 25 }})
+                        .setHTML(`<h3>Weather Information</h3>
+                                <p>Temperature: ${{data.temperature}}°C</p>
+                                <p>Humidity: ${{data.humidity}}%</p>
+                                <p>Wind Speed: ${{data.wind_speed}} km/h</p>
+                                <img src="${{data.icon_url}}" alt="Weather icon" style="width:50px;height:50px;">`))
+                    .addTo(map);
+            }});
 
         </script>
 
