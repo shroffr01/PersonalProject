@@ -485,7 +485,7 @@ st.text('hi')
         
 # Defines streamlit page names
 page_names_to_funcs = {
-    #"Weather Forecast": page1,
+    "Weather Forecast": page1,
     "Route Planner": route_planner
 }
 
