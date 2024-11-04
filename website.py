@@ -363,31 +363,30 @@ def route_planner():
             df_wg = pd.json_normalize(myjson_g['properties']['windGust']['values'])
             df_snow = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
             
-        def convert_time_select_closest_row(var_name):
+            def convert_time_select_closest_row(var_name):
 
-            var_name['validTime'] = var_name['validTime'].str.extract(r'^(.*?)/')
-            var_name['validTime'] = pd.to_datetime(var_name['validTime'])
-            var_name['validTime'] = var_name['validTime'].dt.tz_localize(None)
+                var_name['validTime'] = var_name['validTime'].str.extract(r'^(.*?)/')
+                var_name['validTime'] = pd.to_datetime(var_name['validTime'])
+                var_name['validTime'] = var_name['validTime'].dt.tz_localize(None)
 
 
-            df_ab = (var_name.loc[[abs(var_name['validTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
+                df_ab = (var_name.loc[[abs(var_name['validTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
 
-            return df_ab
+                return df_ab
     
-        df_skycover = convert_time_select_closest_row(df_sky)
-        df_skycover = df_skycover['value']
+            df_skycover = convert_time_select_closest_row(df_sky)
+            df_skycover = df_skycover['value']
 
-        df_snowfall = convert_time_select_closest_row(df_snow)
-        df_snowfall = df_snowfall['value']
+            df_snowfall = convert_time_select_closest_row(df_snow)
+            df_snowfall = df_snowfall['value']
 
-        df_windgust = convert_time_select_closest_row(df_wg)
-        df_windgust = df_windgust['value']
+            df_windgust = convert_time_select_closest_row(df_wg)
+            df_windgust = df_windgust['value']
 
 
-        skycover_list.append(df_skycover)
-        snowfall_list.append(df_snowfall)
-        windgust_list.append(df_windgust)
-
+            skycover_list.append(df_skycover)
+            snowfall_list.append(df_snowfall)
+            windgust_list.append(df_windgust)
 
         temp_list = np.array(temp_list)
 
