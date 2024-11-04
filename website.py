@@ -490,7 +490,7 @@ def route_planner():
 # }
 
 # Initializes streamlit sidebar to select desired page
-demo_name = st.sidebar.selectbox('Select tab',page_names_to_funcs.keys())
+#demo_name = st.sidebar.selectbox('Select tab',page_names_to_funcs.keys())
 
 # Runs selected page
-page_names_to_funcs[demo_name]()
+#page_names_to_funcs[demo_name]()
