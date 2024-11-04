@@ -414,6 +414,7 @@ def route_planner():
     
     if selected_starting_point != None:
         weather_data = collect_weather_data(route_info_df)
+        st.dataframe(weather_data)
 
     def map_plot(selected_starting_point, selected_destination):
         
