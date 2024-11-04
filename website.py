@@ -324,7 +324,7 @@ def route_planner():
         windgust_list = []
 
         for i in range(len(route_info_df)):
-            st.text(route_info_df)
+            
             desired_val = [route_info_df['date_time'][i]]
 
             url = f"https://api.weather.gov/points/{route_info_df['lat'][i]},{route_info_df['lon'][i]}"
