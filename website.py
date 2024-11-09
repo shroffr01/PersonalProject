@@ -416,7 +416,7 @@ def route_planner():
         weather_data = collect_weather_data(route_info_df)
     
         weather_json_df = weather_data[['lat', 'lon', 'date_time', 'temp', 'precip', 'ws', 'skycover', 'snowfall', 'wg']].to_dict(orient='records')
-        weather_json = json.dumps(weather_json_df)
+        #weather_json = json.dumps(weather_json_df)
 
     def map_plot(selected_starting_point, selected_destination):
         
