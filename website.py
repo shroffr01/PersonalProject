@@ -343,7 +343,7 @@ def route_planner():
 
             myjson = json.loads(r.text)
             myjson_g = json.loads(r_g.text)
-            st.text(df)
+            st.text(myjson)
             df = pd.json_normalize(myjson['properties']['periods'])
             df['startTime'] = pd.to_datetime(df['startTime']).dt.tz_localize(None)
 
