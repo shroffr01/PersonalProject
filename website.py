@@ -415,10 +415,8 @@ def route_planner():
     if selected_starting_point != None:
         weather_data = collect_weather_data(route_info_df)
     
-    st.text(weather_data)
-
-    weather_json_df = weather_data[['lat', 'lon', 'date_time', 'temp', 'precip', 'ws', 'skycover', 'snowfall', 'wg']].to_dict(orient='records')
-    weather_json = json.dumps(weather_json_df)
+        weather_json_df = weather_data[['lat', 'lon', 'date_time', 'temp', 'precip', 'ws', 'skycover', 'snowfall', 'wg']].to_dict(orient='records')
+        weather_json = json.dumps(weather_json_df)
 
     def map_plot(selected_starting_point, selected_destination):
         
@@ -506,7 +504,7 @@ st.text('hi')
         
 # Defines streamlit page names
 page_names_to_funcs = {
-    "Weather Forecast": page1,
+    #"Weather Forecast": page1,
     "Route Planner": route_planner
 }
 
