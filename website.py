@@ -382,7 +382,7 @@ def route_planner():
                     break
                 except Exception as e:
                     retry_count += 1 
-                    
+
             retry_count = 0
             while retry_count <= max_retries:
                 try:
@@ -438,6 +438,7 @@ def route_planner():
         route_info_df['snowfall'] = snowfall_list
         route_info_df['wg'] = windgust_list
 
+        st.text(route_info_df)
         return route_info_df
     
     if selected_starting_point != None:
