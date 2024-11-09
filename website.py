@@ -335,7 +335,7 @@ def route_planner():
 
             hourlyURL = df_url_info['forecastHourly'].iloc[0]   
             hourlyURL_grid = df_url_info['forecastGridData'].iloc[0] 
-
+            st.text(hourlyURL)
             # Obtain actual hourly forecast data
 
             r = requests.get(hourlyURL, headers = headers)
