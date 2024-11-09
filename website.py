@@ -324,7 +324,7 @@ def route_planner():
         windgust_list = []
 
         for i in range(len(route_info_df)):
-            
+            print(i)
             desired_val = [route_info_df['date_time'][i]]
 
             url = f"https://api.weather.gov/points/{route_info_df['lat'][i]},{route_info_df['lon'][i]}"
@@ -335,7 +335,7 @@ def route_planner():
 
             hourlyURL = df_url_info['forecastHourly'].iloc[0]   
             hourlyURL_grid = df_url_info['forecastGridData'].iloc[0] 
-            st.text(hourlyURL)
+            
             # Obtain actual hourly forecast data
 
             r = requests.get(hourlyURL, headers = headers)
