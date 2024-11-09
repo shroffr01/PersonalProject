@@ -343,8 +343,17 @@ def route_planner():
 
             myjson = json.loads(r.text)
             myjson_g = json.loads(r_g.text)
-            #st.text(myjson)
-            df = pd.json_normalize(myjson['properties']['periods'])
+            
+            max_retries = 10
+            retry_count = 0
+
+            while retry_count <= max_retries:
+                try:
+                    df = pd.json_normalize(myjson['properties']['periods'])
+                    break
+                except Exception as e:
+                    retry_count += 1
+
             df['startTime'] = pd.to_datetime(df['startTime']).dt.tz_localize(None)
 
             df = (df.loc[[abs(df['startTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
@@ -358,10 +367,29 @@ def route_planner():
             wind_speed_list.append(df_ws)
 
             # Obtain actual hourly forecast data from grid forecast
+            retry_count = 0
+            while retry_count <= max_retries:
+                try:
+                    df_sky = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
+                    break
+                except Exception as e:
+                    retry_count += 1
 
-            df_sky = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
-            df_wg = pd.json_normalize(myjson_g['properties']['windGust']['values'])
-            df_snow = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
+            retry_count = 0
+            while retry_count <= max_retries:
+                try:
+                    df_wg = pd.json_normalize(myjson_g['properties']['windGust']['values'])
+                    break
+                except Exception as e:
+                    retry_count += 1 
+                    
+            retry_count = 0
+            while retry_count <= max_retries:
+                try:
+                    df_snow = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
+                    break
+                except Exception as e:
+                    retry_count += 1                   
             
             def convert_time_select_closest_row(var_name):
 
