@@ -469,7 +469,7 @@ def route_planner():
             df_main['dt'] = pd.to_datetime(df_main['dt'])
             
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
-
+            st.dataframe(df)
             if 'alerts' in df.columns:
                 st.text('hi')
                 df_alert = pd.json_normalize(myjson['alerts'])
