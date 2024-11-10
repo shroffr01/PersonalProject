@@ -464,12 +464,14 @@ def route_planner():
             r = requests.get(url, headers = headers)  
             myjson = json.loads(r.text)
 
+            df = pd.json_normalize(myjson)
+
             df_main = pd.json_normalize(myjson['hourly'])
             df_main['dt'] = df_main['dt'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
             df_main['dt'] = pd.to_datetime(df_main['dt'])
             
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
-            st.dataframe(df)
+            
             if 'alerts' in df.columns:
                 st.text('hi')
                 df_alert = pd.json_normalize(myjson['alerts'])
