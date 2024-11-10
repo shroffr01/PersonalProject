@@ -454,8 +454,8 @@ def route_planner():
             desired_val = [route_info_df['date_time'][i]]
 
             API_key = '6e4a8336ddea630116c32b827c5226be'
-            
-            url = f'https://api.openweathermap.org/data/3.0/onecall?lat={route_info_df['lat'][i]}&lon={route_info_df['lon'][i]}&exclude=current,minutely,daily&appid={API_key}'
+
+            url = f"https://api.openweathermap.org/data/3.0/onecall?lat={route_info_df['lat'][i]}&lon={route_info_df['lon'][i]}&exclude=current,minutely,daily&appid={API_key}"
             r = requests.get(url, headers = headers)  
             myjson = json.loads(r.text)
 
