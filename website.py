@@ -485,6 +485,7 @@ def route_planner():
             else:
                 print('hi')
 
+            alerts_list.append(0)
             st.text(alerts_list)
 
             weather_info_df = pd.concat([weather_info_df, df_main])
