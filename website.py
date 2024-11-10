@@ -455,6 +455,7 @@ def route_planner():
         for i in range(len(route_info_df)):
             
             desired_val = [route_info_df['date_time'][i]]
+            st.text(desired_val)
             desired_lat = [route_info_df['lat'][i]]
             desired_lon = [route_info_df['lon'][i]]
 
