@@ -462,7 +462,7 @@ def route_planner():
             df_main = pd.json_normalize(myjson['hourly'])
             df_main['dt'] = df_main['dt'].apply(lambda x: datetime.fromtimestamp(x, tz=timezone.utc))
 
-            df_main = (df_main.loc[[abs(df_main['startTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
+            df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
 
             weather_info_df = pd.Concat([weather_info_df, df_main])
         st.dataframe(weather_info_df)
