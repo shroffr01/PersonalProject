@@ -452,6 +452,8 @@ def route_planner():
         lat_list=[]
         lon_list=[]
 
+        alerts_tot = []
+
         for i in range(len(route_info_df)):
             
             desired_val = [route_info_df['date_time'][i]]
@@ -473,7 +475,7 @@ def route_planner():
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
             
             if 'alerts' in df.columns:
-                st.text('hi')
+                
                 df_alert = pd.json_normalize(myjson['alerts'])
                 df_alert['start'] = df_alert['start'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
                 df_alert['start'] = pd.to_datetime(df_alert['start'])
@@ -483,34 +485,29 @@ def route_planner():
                 alerts_list = []
 
                 for a in range(len(df_alert)):
+
                     desired_val = pd.to_datetime(desired_val)
                     desired_val = desired_val.strftime('%Y-%m-%d %H:%M:%S')
                     desired_val = pd.to_datetime(desired_val)
-                    st.text(desired_val)
-                    st.text(df_alert['start'][a])
-                    st.text(df_alert['end'][a])
 
                     if (desired_val >= df_alert['start'][a]) & (desired_val <= df_alert['end'][a]):
-                        st.text('1')
+                        
                         alerts_list.append(df_alert['event'][0])
             else:
-                alerts_list=[]
-                
-
-            alerts_list.append(0)
-            st.text(alerts_list)
+                alerts_list=[0]
 
             weather_info_df = pd.concat([weather_info_df, df_main])
+            alerts_tot.append(alerts_list)
+
             lat_list.append(desired_lat)
             lon_list.append(desired_lon)
 
-        
-
         weather_info_df['lat'] = lat_list
         weather_info_df['lon'] = lon_list
+        weather_info_df['alerts'] = alerts_tot
+        
         weather_info_df = weather_info_df.reset_index()
 
-        
         st.dataframe(weather_info_df)
 
     if selected_starting_point != None:
