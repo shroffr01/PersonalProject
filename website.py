@@ -455,18 +455,18 @@ def route_planner():
 
             API_key = '6e4a8336ddea630116c32b827c5226be'
 
-            url = f"https://api.openweathermap.org/data/3.0/onecall?lat={route_info_df['lat'][i]}&lon={route_info_df['lon'][i]}&exclude=current,minutely,daily&appid={API_key}"
+            url = f"https://api.openweathermap.org/data/3.0/onecall?lat={route_info_df['lat'][i]}&lon={route_info_df['lon'][i]}&exclude=current,minutely,daily&units=standard&appid={API_key}"
             r = requests.get(url, headers = headers)  
             myjson = json.loads(r.text)
 
             df_main = pd.json_normalize(myjson['hourly'])
             df_main['dt'] = df_main['dt'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
             df_main['dt'] = pd.to_datetime(df_main['dt'])
-            st.text(df_main['dt'])
+            
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
 
             weather_info_df = pd.concat([weather_info_df, df_main])
-            
+
         st.dataframe(weather_info_df)
 
     if selected_starting_point != None:
