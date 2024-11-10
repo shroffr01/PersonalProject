@@ -455,7 +455,6 @@ def route_planner():
         for i in range(len(route_info_df)):
             
             desired_val = [route_info_df['date_time'][i]]
-            st.text(desired_val)
             desired_lat = [route_info_df['lat'][i]]
             desired_lon = [route_info_df['lon'][i]]
 
@@ -485,6 +484,10 @@ def route_planner():
 
                 for a in range(len(df_alert)):
                     desired_val = pd.to_datetime(desired_val)
+                    st.text(desired_val)
+                    st.text(df_alert['start'][a])
+                    st.text(df_alert['end'][a])
+                    
                     if (desired_val > df_alert['start'][a]) & (desired_val <= df_alert['start'][a]):
                         alerts_list.append(df_alert['event'][0])
             else:
