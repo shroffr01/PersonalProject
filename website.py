@@ -483,8 +483,8 @@ def route_planner():
 
                 alerts_list = []
 
-                for i in range(len(df_alert)):
-                    if (desired_val > df_alert['start'][i]) & (desired_val <= df_alert['start'][i]):
+                for a in range(len(df_alert)):
+                    if (desired_val > df_alert['start'][a]) & (desired_val <= df_alert['start'][a]):
                         alerts_list.append(df_alert['event'][0])
             else:
                 alerts_list=[]
