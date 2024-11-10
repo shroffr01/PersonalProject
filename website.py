@@ -494,7 +494,7 @@ def route_planner():
                         
                         alerts_list.append(df_alert['event'][0])
             else:
-                alerts_list=[0]
+                alerts_list=['None']
 
             weather_info_df = pd.concat([weather_info_df, df_main])
             alerts_tot.append(alerts_list)
@@ -505,7 +505,7 @@ def route_planner():
         weather_info_df['lat'] = lat_list
         weather_info_df['lon'] = lon_list
         weather_info_df['alerts'] = alerts_tot
-        
+
         weather_info_df = weather_info_df.reset_index()
 
         st.dataframe(weather_info_df)
