@@ -470,13 +470,34 @@ def route_planner():
             
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
 
+            if 'alerts' in df.columns:
+                df_alert = pd.json_normalize(myjson['alerts'])
+                df_alert['start'] = df_alert['start'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
+                df_alert['start'] = pd.to_datetime(df_alert['start'])
+                df_alert['end'] = df_alert['end'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
+                df_alert['end'] = pd.to_datetime(df_alert['end'])
+
+                alerts_list = []
+
+                for i in range(len(df_alert)):
+                    if desired_val > df_alert['start'][i] & desired_val <= df_alert['start'][i]:
+                        alerts_list.append(df_alert['event'][0])
+            else:
+                print('hi')
+
+            st.text(alerts_list)
+
             weather_info_df = pd.concat([weather_info_df, df_main])
             lat_list.append(desired_lat)
             lon_list.append(desired_lon)
 
+        
+
         weather_info_df['lat'] = lat_list
         weather_info_df['lon'] = lon_list
+        weather_info_df = weather_info_df.reset_index()
 
+        
         st.dataframe(weather_info_df)
 
     if selected_starting_point != None:
