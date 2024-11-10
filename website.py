@@ -449,9 +449,14 @@ def route_planner():
 
         weather_info_df = pd.DataFrame()
 
+        lat_list=[]
+        lon_list=[]
+
         for i in range(len(route_info_df)):
             
             desired_val = [route_info_df['date_time'][i]]
+            desired_lat = [route_info_df['lat'][i]]
+            desired_lon = [route_info_df['lon'][i]]
 
             API_key = '6e4a8336ddea630116c32b827c5226be'
 
@@ -466,6 +471,11 @@ def route_planner():
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
 
             weather_info_df = pd.concat([weather_info_df, df_main])
+            lat_list.append(desired_lat)
+            lon_list.append(desired_lon)
+
+        weather_info_df['lat'] = lat_list
+        weather_info_df['lon'] = lon_list
 
         st.dataframe(weather_info_df)
 
