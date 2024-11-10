@@ -484,6 +484,7 @@ def route_planner():
                 alerts_list = []
 
                 for a in range(len(df_alert)):
+                    desired_val = pd.to_datetime(desired_val)
                     if (desired_val > df_alert['start'][a]) & (desired_val <= df_alert['start'][a]):
                         alerts_list.append(df_alert['event'][0])
             else:
