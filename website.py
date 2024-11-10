@@ -465,7 +465,8 @@ def route_planner():
             st.text(df_main['dt'])
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
 
-            weather_info_df = pd.Concat([weather_info_df, df_main])
+            weather_info_df = pd.concat([weather_info_df, df_main])
+            
         st.dataframe(weather_info_df)
 
     if selected_starting_point != None:
