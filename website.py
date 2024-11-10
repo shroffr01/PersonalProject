@@ -490,7 +490,7 @@ def route_planner():
                     st.text(df_alert['start'][a])
                     st.text(df_alert['end'][a])
 
-                    if (desired_val > df_alert['start'][a]) & (desired_val <= df_alert['start'][a]):
+                    if (desired_val >= df_alert['start'][a]) & (desired_val <= df_alert['end'][a]):
                         st.text('1')
                         alerts_list.append(df_alert['event'][0])
             else:
