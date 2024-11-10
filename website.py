@@ -5,7 +5,7 @@ import numpy as np
 import requests
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import googlemaps
 
 import dotenv
@@ -441,8 +441,33 @@ def route_planner():
         st.text(route_info_df)
         return route_info_df
     
+    def collect_weather_data1(route_info_df):
+        
+        r = requests.get('https://httpbin.org/user-agent')
+        useragent = json.loads(r.text)['user-agent']
+        headers = {'User-agent': useragent}
+
+        weather_info_df = pd.DataFrame()
+
+        for i in range(len(route_info_df)):
+            
+            desired_val = [route_info_df['date_time'][i]]
+
+            API_key = '6e4a8336ddea630116c32b827c5226be'
+            url = f"url = f'https://api.openweathermap.org/data/3.0/onecall?lat={route_info_df['lat'][i]}&lon={route_info_df['lon'][i]}&exclude=current,minutely,daily&appid={API_key}'"
+            r = requests.get(url, headers = headers)  
+            myjson = json.loads(r.text)
+
+            df_main = pd.json_normalize(myjson['hourly'])
+            df_main['dt'] = df_main['dt'].apply(lambda x: datetime.fromtimestamp(x, tz=timezone.utc))
+
+            df_main = (df_main.loc[[abs(df_main['startTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
+
+            weather_info_df = pd.Concat([weather_info_df, df_main])
+        st.dataframe(weather_info_df)
+        
     if selected_starting_point != None:
-        weather_data = collect_weather_data(route_info_df)
+        weather_data = collect_weather_data1(route_info_df)
     
         weather_json_df = weather_data[['lat', 'lon', 'date_time', 'temp', 'precip', 'ws', 'skycover', 'snowfall', 'wg']].to_dict(orient='records')
         #weather_json = json.dumps(weather_json_df)
