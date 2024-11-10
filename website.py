@@ -460,7 +460,7 @@ def route_planner():
             myjson = json.loads(r.text)
 
             df_main = pd.json_normalize(myjson['hourly'])
-            df_main['dt'] = df_main['dt'].apply(lambda x: datetime.fromtimestamp(x, tz=timezone.utc))
+            df_main['dt'] = df_main['dt'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
 
             df_main = (df_main.loc[[abs(df_main['dt'] - hour).idxmin() for hour in desired_val]]).reset_index()
 
