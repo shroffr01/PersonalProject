@@ -483,7 +483,7 @@ def route_planner():
                 alerts_list = []
 
                 for a in range(len(df_alert)):
-                    #desired_val = pd.to_datetime(desired_val)
+                    desired_val = pd.to_datetime(desired_val)
                     desired_val = desired_val.strftime('%Y-%m-%d %H:%M:%S')
                     desired_val = pd.to_datetime(desired_val)
                     st.text(desired_val)
