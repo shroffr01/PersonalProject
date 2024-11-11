@@ -517,7 +517,7 @@ def route_planner():
         weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop']].to_dict(orient='records')
         weather_json_df = pd.DataFrame(weather_json_df)
         weather_json = weather_json_df.to_json(orient="records")
-
+        st.text(weather_json)
     def map_plot(selected_starting_point, selected_destination, weather_json):
         
         html_code = f"""
@@ -572,7 +572,7 @@ def route_planner():
             directions.query();
 
             // Weather data
-            const weatherData = JSON.parse('{{ weather_json | safe }}'); // Ensure JSON is passed as a string here
+            const weatherData = JSON.parse('{{ {weather_json} | safe }}'); // Ensure JSON is passed as a string here
 
             // Add weather markers with pop-ups
             weatherData.forEach(data => {{
