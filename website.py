@@ -577,7 +577,7 @@ def route_planner():
             // Add weather markers with pop-ups
             weatherData.forEach(data => {{
                 const marker = new mapboxgl.Marker()
-                    .setLngLat([data.lon, data.lat])
+                    .setLngLat([data.lon[0], data.lat[0]])
                     .setPopup(new mapboxgl.Popup({{offset: 25 }})
                         .setHTML(`
                             <h3>Weather Information</h3>
