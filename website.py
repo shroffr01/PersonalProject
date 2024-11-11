@@ -516,7 +516,7 @@ def route_planner():
         #weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop']].to_dict(orient='records')
         #weather_json = weather_json_df.to_json(orient="records")
 
-    def map_plot(selected_starting_point, selected_destination, weather_json):
+    def map_plot(selected_starting_point, selected_destination):
         
         html_code = f"""
         <!DOCTYPE html>
