@@ -518,7 +518,7 @@ def route_planner():
         weather_json_df = pd.DataFrame(weather_json_df)
         weather_json = weather_json_df.to_json(orient="records")
 
-    def map_plot(selected_starting_point, selected_destination):
+    def map_plot(selected_starting_point, selected_destination, weather_json):
         
         html_code = f"""
         <!DOCTYPE html>
@@ -572,6 +572,21 @@ def route_planner():
             directions.query();
 
             // Weather data
+            const weatherData = JSON.parse('{{ weather_json | safe }}'); // Ensure JSON is passed as a string here
+
+            // Add weather markers with pop-ups
+            weatherData.forEach(data => {{
+                const marker = new mapboxgl.Marker()
+                    .setLngLat([data.lon, data.lat])
+                    .setPopup(new mapboxgl.Popup({{offset: 25 }})
+                        .setHTML(`
+                            <h3>Weather Information</h3>
+                            <p><strong>Date & Time:</strong> ${{data.dt}}</p>
+                            <p><strong>Temperature:</strong> ${{data.temp}}°F</p>
+                            <p><strong>Wind Speed:</strong> ${{data.wind_speed}} mph</p>
+                        `))
+                    .addTo(map);
+            }});
         </script>
 
         </body>
@@ -582,7 +597,7 @@ def route_planner():
 
 
     if selected_starting_point != None: 
-        map_plot(selected_starting_point, selected_destination)
+        map_plot(selected_starting_point, selected_destination, weather_json)
         
 st.text('hi')   
         
