@@ -513,10 +513,10 @@ def route_planner():
     if selected_starting_point != None:
         weather_data = collect_weather_data1(route_info_df)
     
-        weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop', 'alerts']].to_dict(orient='records')
-        #weather_json = json.dumps(weather_json_df)
+        weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop']].to_dict(orient='records')
+        weather_json = weather_json_df.to_json(orient="records")
 
-    def map_plot(selected_starting_point, selected_destination):
+    def map_plot(selected_starting_point, selected_destination, weather_json):
         
         html_code = f"""
         <!DOCTYPE html>
@@ -570,22 +570,6 @@ def route_planner():
             directions.query();
 
             // Weather data
-            
-            const weatherData = {{weather_json}};
-
-            // Add weather markers
-            weatherData.forEach(data => {{
-                const marker = new mapboxgl.Marker()
-                    .setLngLat([data.lon, data.lat])
-                    .setPopup(new mapboxgl.Popup({{ offset: 25 }})
-                        .setHTML(`<h3>Weather Information</h3>
-                                <p>Temperature: ${{data.temperature}}°C</p>
-                                <p>Humidity: ${{data.humidity}}%</p>
-                                <p>Wind Speed: ${{data.wind_speed}} km/h</p>
-                                <img src="${{data.icon_url}}" alt="Weather icon" style="width:50px;height:50px;">`))
-                    .addTo(map);
-            }});
-
         </script>
 
         </body>
