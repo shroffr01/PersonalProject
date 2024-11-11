@@ -571,17 +571,17 @@ def route_planner():
             // Immediately call query() after setting both points to render the route
             directions.query();
 
-            // Weather data
-            const weatherData = JSON.parse('{{ {weather_json} | safe }}'); // Ensure JSON is passed as a string here
+            // Load weather data from JSON
+            const weatherData = JSON.parse('{weather_json}'); // Ensure JSON is passed as a string here
 
             // Add weather markers with pop-ups
             weatherData.forEach(data => {{
                 const marker = new mapboxgl.Marker()
-                    .setLngLat([data.lon[0], data.lat[0]])
-                    .setPopup(new mapboxgl.Popup({{offset: 25 }})
+                    .setLngLat([data.lon[0], data.lat[0]])  // Use the first element of the array
+                    .setPopup(new mapboxgl.Popup({{ offset: 25 }})
                         .setHTML(`
                             <h3>Weather Information</h3>
-                            <p><strong>Date & Time:</strong> ${{data.dt}}</p>
+                            <p><strong>Date & Time:</strong> ${{new Date(data.dt).toLocaleString()}}</p>
                             <p><strong>Temperature:</strong> ${{data.temp}}°F</p>
                             <p><strong>Wind Speed:</strong> ${{data.wind_speed}} mph</p>
                         `))
