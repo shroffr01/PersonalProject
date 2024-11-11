@@ -509,6 +509,7 @@ def route_planner():
         weather_info_df = weather_info_df.reset_index()
 
         st.dataframe(weather_info_df)
+        return weather_info_df
 
     if selected_starting_point != None:
         weather_data = collect_weather_data1(route_info_df)
