@@ -578,17 +578,34 @@ def route_planner():
         </html>
         """
         html_code1 = f"""
-        <!DOCTYPE html>
-        <html>
+        <!doctype html>
+        <html lang="en">
         <head>
-        <meta charset="utf-8">
-        <title>Display navigation directions</title>
-        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-        <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
-        <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
-        <style>
-            html, body {{ margin: 0; padding: 0; }}
-            #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
+            <meta charset="utf-8" />
+            <title>Demo: Add custom markers in Mapbox GL JS</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans"
+            rel="stylesheet"
+            />
+            <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+            <link
+            href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
+            rel="stylesheet"
+            />
+            <style>
+            body {{
+                margin: 0;
+                padding: 0;
+            }}
+
+            #map {{
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }}
+
             .marker {{
                 background-image: url('https://docs.mapbox.com/demos/custom-markers-gl-js/mapbox-icon.png');
                 background-size: cover;
@@ -597,73 +614,76 @@ def route_planner():
                 border-radius: 50%;
                 cursor: pointer;
             }}
+
             .mapboxgl-popup {{
                 max-width: 200px;
             }}
+
             .mapboxgl-popup-content {{
                 text-align: center;
                 font-family: 'Open Sans', sans-serif;
             }}
-        </style>
+            </style>
         </head>
         <body>
-        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
-        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
-        <div id="map"></div>
+            <div id="map"></div>
 
-        <script>
+            <script>
             mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
+
+            const geojson = {{
+                'type': 'FeatureCollection',
+                'features': [
+                {
+                    'type': 'Feature',
+                    'geometry': {{
+                    'type': 'Point',
+                    'coordinates': [-77.032, 38.913]
+                    }},
+                    'properties': {{
+                    'title': 'Mapbox',
+                    'description': 'Washington, D.C.'
+                    }}
+                },
+                {
+                    'type': 'Feature',
+                    'geometry': {{
+                    'type': 'Point',
+                    'coordinates': [-122.414, 37.776]
+                    }},
+                    'properties': {{
+                    'title': 'Mapbox',
+                    'description': 'San Francisco, California'
+                    }}
+                }
+                ]
+            }};
+
             const map = new mapboxgl.Map({{
                 container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v12',
-                center: [-79.4512, 43.6568],
-                zoom: 4
+                style: 'mapbox://styles/mapbox/light-v11',
+                center: [-96, 37.8],
+                zoom: 3
             }});
 
-            const directions = new MapboxDirections({{
-                accessToken: mapboxgl.accessToken,
-                profile: 'mapbox/driving',
-                controls: {{ profileSwitcher: false }}
-            }});
-            
-            map.addControl(directions, 'top-left');
-            
-            directions.setOrigin('{selected_starting_point}');
-            directions.setDestination('{selected_destination}');
+            // add markers to map
+            for (const feature of geojson.features) {{
+                // create a HTML element for each feature
+                const el = document.createElement('div');
+                el.className = 'marker';
 
-            map.on('load', () => {{
-                directions.query();
-
-                const geojson = {{
-                    'type': 'FeatureCollection',
-                    'features': [
-                        {{
-                            'type': 'Feature',
-                            'geometry': {{ 'type': 'Point', 'coordinates': [-77.032, 38.913] }},
-                            'properties': {{ 'title': 'Mapbox', 'description': 'Washington, D.C.' }}
-                        }},
-                        {{
-                            'type': 'Feature',
-                            'geometry': {{ 'type': 'Point', 'coordinates': [-122.414, 37.776] }},
-                            'properties': {{ 'title': 'Mapbox', 'description': 'San Francisco, California' }}
-                        }}
-                    ]
-                }};
-
-                for (const feature of geojson.features) {{
-                    const el = document.createElement('div');
-                    el.className = 'marker';
-
-                    new mapboxgl.Marker(el)
-                        .setLngLat(feature.geometry.coordinates)
-                        .setPopup(
-                            new mapboxgl.Popup({{ offset: 25 }})
-                                .setHTML(`<h3>${{ feature.properties.title }}</h3><p>${{ feature.properties.description }}</p>`)
-                        )
-                        .addTo(map);
-                }}
-            }});
-        </script>
+                // make a marker for each feature and add it to the map
+                new mapboxgl.Marker(el)
+                .setLngLat(feature.geometry.coordinates)
+                .setPopup(
+                    new mapboxgl.Popup({{offset: 25}}) // add popups
+                    .setHTML(
+                        `<h3>${{feature.properties.title}}</h3><p>${{feature.properties.description}}</p>`
+                    )
+                )
+                .addTo(map);
+            }}
+            </script>
         </body>
         </html>
         """
