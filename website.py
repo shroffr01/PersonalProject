@@ -672,6 +672,7 @@ def route_planner():
         </script>
         </body>
         </html>
+        """
 
         st.components.v1.html(html_code1, height=600, scrolling=False)
 
