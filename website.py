@@ -546,53 +546,8 @@ def route_planner():
                 style: 'mapbox://styles/mapbox/streets-v12',
                 center: [-79.4512, 43.6568],
                 zoom: 4
-
-                const geojson = {{
-                type: 'FeatureCollection',
-                features: [
-                    {{
-                    type: 'Feature',
-                    geometry: {{
-                        type: 'Point',
-                        coordinates: [-77.032, 38.913]
-                    }},
-                    properties: {{
-                        title: 'Mapbox',
-                        description: 'Washington, D.C.'
-                    }}
-                    }},
-                    {{
-                    type: 'Feature',
-                    geometry: {{
-                        type: 'Point',
-                        coordinates: [-122.414, 37.776]
-                    }},
-                    properties: {{
-                        title: 'Mapbox',
-                        description: 'San Francisco, California'
-                    }}
-                    }}
-                ]
-                }};
             }});
 
-            // add markers to map
-            for (const feature of geojson.features) {{
-            
-            // code from step 5-1 will go here
-
-            // make a marker for each feature and add to the map
-            new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map);  // Replace this line with code from step 5-2
-
-            //code from step 6 will go here
-            }}
-
-            // Initialize the MapboxDirections control with driving only
-            const directions = new MapboxDirections({{
-                accessToken: mapboxgl.accessToken,
-                profile: 'mapbox/driving',
-                controls: {{profileSwitcher: false}}
-            }});
 
             // Add the directions control to the map
             map.addControl(directions, 'top-left');
