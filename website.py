@@ -577,7 +577,7 @@ def route_planner():
         </body>
         </html>
         """
-        html_code1 = f"""
+        html_code1 = """
         <!doctype html>
         <html lang="en">
         <head>
@@ -632,30 +632,30 @@ def route_planner():
             mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
 
             const geojson = {{
-                'type': 'FeatureCollection',
-                'features': [
-                {
-                    'type': 'Feature',
-                    'geometry': {{
-                    'type': 'Point',
-                    'coordinates': [-77.032, 38.913]
+                "type": "FeatureCollection",
+                "features": [
+                {{
+                    "type": "Feature",
+                    "geometry": {{
+                        "type": "Point",
+                        "coordinates": [-77.032, 38.913]
                     }},
-                    'properties': {{
-                    'title': 'Mapbox',
-                    'description': 'Washington, D.C.'
+                    "properties": {{
+                        "title": "Mapbox",
+                        "description": "Washington, D.C."
                     }}
-                },
-                {
-                    'type': 'Feature',
-                    'geometry': {{
-                    'type': 'Point',
-                    'coordinates': [-122.414, 37.776]
+                }},
+                {{
+                    "type": "Feature",
+                    "geometry": {{
+                        "type": "Point",
+                        "coordinates": [-122.414, 37.776]
                     }},
-                    'properties': {{
-                    'title': 'Mapbox',
-                    'description': 'San Francisco, California'
+                    "properties": {{
+                        "title": "Mapbox",
+                        "description": "San Francisco, California"
                     }}
-                }
+                }}
                 ]
             }};
 
@@ -676,7 +676,7 @@ def route_planner():
                 new mapboxgl.Marker(el)
                 .setLngLat(feature.geometry.coordinates)
                 .setPopup(
-                    new mapboxgl.Popup({{offset: 25}}) // add popups
+                    new mapboxgl.Popup({{ offset: 25 }}) // add popups
                     .setHTML(
                         `<h3>${{feature.properties.title}}</h3><p>${{feature.properties.description}}</p>`
                     )
@@ -687,6 +687,7 @@ def route_planner():
         </body>
         </html>
         """
+
 
 
         st.components.v1.html(html_code1, height=600, scrolling=False)
