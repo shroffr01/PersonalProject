@@ -587,22 +587,22 @@ def route_planner():
         <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
         <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
         <style>
-            html, body {{margin: 0; padding: 0;}}
-            #map {{position: absolute; top: 0; bottom: 0; width: 100%; }}
+            html, body {{ margin: 0; padding: 0; }}
+            #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
             .marker {{
-            background-image: url('https://docs.mapbox.com/demos/custom-markers-gl-js/mapbox-icon.png');
-            background-size: cover;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
+                background-image: url('https://docs.mapbox.com/demos/custom-markers-gl-js/mapbox-icon.png');
+                background-size: cover;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                cursor: pointer;
             }}
             .mapboxgl-popup {{
-            max-width: 200px;
+                max-width: 200px;
             }}
             .mapboxgl-popup-content {{
-            text-align: center;
-            font-family: 'Open Sans', sans-serif;
+                text-align: center;
+                font-family: 'Open Sans', sans-serif;
             }}
         </style>
         </head>
@@ -614,60 +614,54 @@ def route_planner():
         <script>
             mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
             const map = new mapboxgl.Map({{
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: [-79.4512, 43.6568],
-            zoom: 4
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v12',
+                center: [-79.4512, 43.6568],
+                zoom: 4
             }});
 
-            // Initialize the MapboxDirections control with driving only
             const directions = new MapboxDirections({{
-            accessToken: mapboxgl.accessToken,
-            profile: 'mapbox/driving',
-            controls: {{profileSwitcher: false}}
+                accessToken: mapboxgl.accessToken,
+                profile: 'mapbox/driving',
+                controls: {{ profileSwitcher: false }}
             }});
             
             map.addControl(directions, 'top-left');
             
-            // Set origin and destination
             directions.setOrigin('{selected_starting_point}');
             directions.setDestination('{selected_destination}');
 
             map.on('load', () => {{
-            directions.query();
+                directions.query();
 
-            // Marker data
-            const geojson = {{
-                'type': 'FeatureCollection',
-                'features': [
-                {
-                    'type': 'Feature',
-                    'geometry': {{'type': 'Point', 'coordinates': [-77.032, 38.913]}},
-                    'properties': {{'title': 'Mapbox', 'description': 'Washington, D.C.'}}
-                },
-                {
-                    'type': 'Feature',
-                    'geometry': {{'type': 'Point', 'coordinates': [-122.414, 37.776]}},
-                    'properties': {{'title': 'Mapbox', 'description': 'San Francisco, California'}}
-                }
-                ]
-            }};
+                const geojson = {{
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {{
+                            'type': 'Feature',
+                            'geometry': {{ 'type': 'Point', 'coordinates': [-77.032, 38.913] }},
+                            'properties': {{ 'title': 'Mapbox', 'description': 'Washington, D.C.' }}
+                        }},
+                        {{
+                            'type': 'Feature',
+                            'geometry': {{ 'type': 'Point', 'coordinates': [-122.414, 37.776] }},
+                            'properties': {{ 'title': 'Mapbox', 'description': 'San Francisco, California' }}
+                        }}
+                    ]
+                }};
 
-            // Add markers to map
-            for (const feature of geojson.features) {{
-                // Create a HTML element for each feature
-                const el = document.createElement('div');
-                el.className = 'marker';
+                for (const feature of geojson.features) {{
+                    const el = document.createElement('div');
+                    el.className = 'marker';
 
-                // Make a marker for each feature and add it to the map
-                new mapboxgl.Marker(el)
-                .setLngLat(feature.geometry.coordinates)
-                .setPopup(
-                    new mapboxgl.Popup({{offset: 25}})
-                    .setHTML(`<h3>${{feature.properties.title}}</h3><p>${{feature.properties.description}}</p>`)
-                )
-                .addTo(map);
-            }}
+                    new mapboxgl.Marker(el)
+                        .setLngLat(feature.geometry.coordinates)
+                        .setPopup(
+                            new mapboxgl.Popup({{ offset: 25 }})
+                                .setHTML(`<h3>${{ feature.properties.title }}</h3><p>${{ feature.properties.description }}</p>`)
+                        )
+                        .addTo(map);
+                }}
             }});
         </script>
         </body>
