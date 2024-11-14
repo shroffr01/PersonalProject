@@ -632,32 +632,33 @@ def route_planner():
             mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
 
             const geojson = {{
-                'type': 'FeatureCollection',
-                'features': [
-                {
-                    'type': 'Feature',
-                    'geometry': {{
-                    'type': 'Point',
-                    'coordinates': [-77.032, 38.913]
+            "type": "FeatureCollection",
+            "features": [
+                {{
+                    "type": "Feature",
+                    "geometry": {{
+                        "type": "Point",
+                        "coordinates": [-77.032, 38.913]
                     }},
-                    'properties': {{
-                    'title': 'Mapbox',
-                    'description': 'Washington, D.C.'
+                    "properties": {{
+                        "title": "Mapbox",
+                        "description": "Washington, D.C."
                     }}
-                },
-                {
-                    'type': 'Feature',
-                    'geometry': {{
-                    'type': 'Point',
-                    'coordinates': [-122.414, 37.776]
+                }},
+                {{
+                    "type": "Feature",
+                    "geometry": {{
+                        "type": "Point",
+                        "coordinates": [-122.414, 37.776]
                     }},
-                    'properties': {{
-                    'title': 'Mapbox',
-                    'description': 'San Francisco, California'
+                    "properties": {{
+                        "title": "Mapbox",
+                        "description": "San Francisco, California"
                     }}
-                }
-                ]
-            }};
+                }}
+            ]
+        }};
+
 
             const map = new mapboxgl.Map({{
                 container: 'map',
