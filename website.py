@@ -548,6 +548,12 @@ def route_planner():
                 zoom: 4
             }});
 
+            // Initialize the MapboxDirections control with driving only
+            const directions = new MapboxDirections({{
+                accessToken: mapboxgl.accessToken,
+                profile: 'mapbox/driving',
+                controls: {{profileSwitcher: false}}
+            }});
 
             // Add the directions control to the map
             map.addControl(directions, 'top-left');
