@@ -577,7 +577,7 @@ def route_planner():
         </body>
         </html>
         """
-        html_code1 = """
+        html_code1 = f"""
         <!doctype html>
         <html lang="en">
         <head>
