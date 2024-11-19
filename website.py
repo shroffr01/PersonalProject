@@ -518,6 +518,7 @@ def route_planner():
         weather_json_df = pd.DataFrame(weather_json_df)
         weather_json = weather_json_df.to_json(orient="records")
         st.text(weather_json)
+    
     def map_plot(selected_starting_point, selected_destination, weather_json):
         
         html_code = f"""
@@ -577,121 +578,99 @@ def route_planner():
         </body>
         </html>
         """
-        html_code1 = f"""
-        <!doctype html>
-        <html lang="en">
-        <head>
-            <meta charset="utf-8" />
-            <title>Demo: Add custom markers in Mapbox GL JS</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link
-            href="https://fonts.googleapis.com/css?family=Open+Sans"
-            rel="stylesheet"
-            />
-            <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
-            <link
-            href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
-            rel="stylesheet"
-            />
-            <style>
-            body {{
-                margin: 0;
-                padding: 0;
-            }}
 
-            #map {{
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                width: 100%;
-            }}
+        # html_code = f"""
+        # <!DOCTYPE html>
+        # <html>
+        # <head>
+        #     <meta charset="utf-8">
+        #     <title>Display navigation directions with markers</title>
+        #     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+        #     <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
+        #     <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+        #     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
+        #     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
+        #     <style>
+        #         html, body {{ margin: 0; padding: 0; }}
+        #         #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
+        #         .marker {{
+        #             background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
+        #             background-size: cover;
+        #             width: 50px;
+        #             height: 50px;
+        #             border-radius: 50%;
+        #             cursor: pointer;
+        #         }}
+        #     </style>
+        # </head>
+        # <body>
+        # <div id="map"></div>
+        # <script>
+        #     mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
+        #     const map = new mapboxgl.Map({{
+        #         container: 'map',
+        #         style: 'mapbox://styles/mapbox/streets-v12',
+        #         center: [[-79.4512, 43.6568]],
+        #         zoom: 4
+        #     }});
 
-            .marker {{
-                background-image: url('https://docs.mapbox.com/demos/custom-markers-gl-js/mapbox-icon.png');
-                background-size: cover;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                cursor: pointer;
-            }}
+        #     // Initialize the MapboxDirections control with driving only
+        #     const directions = new MapboxDirections({{
+        #         accessToken: mapboxgl.accessToken,
+        #         profile: 'mapbox/driving',
+        #         controls: {{ profileSwitcher: false }}
+        #     }});
 
-            .mapboxgl-popup {{
-                max-width: 200px;
-            }}
+        #     // Add the directions control to the map
+        #     map.addControl(directions, 'top-left');
 
-            .mapboxgl-popup-content {{
-                text-align: center;
-                font-family: 'Open Sans', sans-serif;
-            }}
-            </style>
-        </head>
-        <body>
-            <div id="map"></div>
+        #     // GeoJSON array dynamically passed from Python
+        #     const geojson = [
+        #     {{
+        #         "dt": 1732028400000,
+        #         "lat": [40.69411],
+        #         "lon": [-73.924563],
+        #         "temp": 51.28,
+        #         "description": "Sample marker 1"
+        #     }},
+        #     {{
+        #         "dt": 1732032000000,
+        #         "lat": [40.663696],
+        #         "lon": [-74.183502],
+        #         "temp": 51.91,
+        #         "description": "Sample marker 2"
+        #     }}
+        # ];
 
-            <script>
-            mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
+        #     map.on('load', () => {{
+        #         // Set origin and destination
+        #         directions.setOrigin([{lon}, {lat}]);
+        #         directions.setDestination([{destination_lon}, {destination_lat}]);
+        #         directions.query();
 
-            const geojson = {{
-                'type': 'FeatureCollection',
-                'features': [
-                {{
-                    'type': 'Feature',
-                    'geometry': {{
-                        'type': 'Point',
-                        'coordinates': [-77.032, 38.913]
-                    }},
-                    'properties': {{
-                        'title': 'Mapbox',
-                        'description': 'Washington, D.C.'
-                    }}
-                }},
-                {{
-                    'type': 'Feature',
-                    'geometry': {{
-                        'type': 'Point',
-                        'coordinates': [-122.414, 37.776]
-                    }},
-                    'properties': {{
-                        'title': 'Mapbox',
-                        'description': 'San Francisco, California'
-                    }}
-                }}
-                ]
-            }};
+        #         // Add markers to the map
+        #         geojson.forEach((point) => {{
+        #             const el = document.createElement('div');
+        #             el.className = 'marker';
 
-            const map = new mapboxgl.Map({{
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v11',
-                center: [-96, 37.8],
-                zoom: 3
-            }});
-
-            // add markers to map
-            for (const feature of geojson.features) {{
-                // create a HTML element for each feature
-                const el = document.createElement('div');
-                el.className = 'marker';
-
-                // make a marker for each feature and add it to the map
-                new mapboxgl.Marker(el)
-                .setLngLat(feature.geometry.coordinates)
-                .setPopup(
-                    new mapboxgl.Popup({{offset: 25}}) // add popups
-                    .setHTML(
-                        `<h3>${{feature.properties.title}}</h3><p>${{feature.properties.description}}</p>`
-                    )
-                )
-                .addTo(map);
-            }}
-            </script>
-        </body>
-        </html>
-        """
+        #             // Create the marker and add it to the map
+        #             new mapboxgl.Marker(el)
+        #                 .setLngLat([point.lon[0], point.lat[0]])
+        #                 .setPopup(
+        #                     new mapboxgl.Popup({{ offset: 25 }})
+        #                         .setHTML(`<h3>Temperature: ${'{point.temp}'}°F</h3><p>${'{point.description}'}</p>`)
+        #                 )
+        #                 .addTo(map);
+        #         }});
+        #     }});
+        # </script>
+        # </body>
+        # </html>
+        # """
 
 
 
-
-        st.components.v1.html(html_code1, height=600, scrolling=False)
+        st.components.v1.html(html_code, height=600, scrolling=False)
 
     if selected_starting_point != None: 
         map_plot(selected_starting_point, selected_destination, weather_json)
