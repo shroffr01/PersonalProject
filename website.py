@@ -544,7 +544,9 @@ def route_planner():
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
                             .setHTML(`Weather Forecast</h3><p>Temperature: ${{point.temp}}°F</p>
-                            <p>Temperature: ${{point.temp}}°F</p>`)
+                            <p>Dew Point: ${{point.dew_point}}°F</p><p>UV Index: ${{point.uvi}}</p>
+                            <p>Cloud Cover %: ${{point.clouds}}</p><p>Wind Speed: ${{point.wind_speed}}</p>
+                            <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.pop}}</p>`)
                     )
                     .addTo(map);
             }});
