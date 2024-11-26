@@ -543,7 +543,7 @@ def route_planner():
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
-                            .setHTML(`<h3>Temperature: ${{point.temp}}°F</h3><p>${{point.description}}</p>`)
+                            .setHTML(`<h3>Temperature: ${{point.temp}}°F</h3>`<h3>Temperature: ${{point.temp}}°F</h3>)
                     )
                     .addTo(map);
             }});
