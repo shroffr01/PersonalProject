@@ -535,15 +535,15 @@ def route_planner():
 
             // Add markers to the map
             geojson.forEach((point) => {{
-                const el = document.createElement('div');
-                el.className = 'marker';
+                //const el = document.createElement('div');
+                //el.className = 'marker';
 
                 // Create the marker and add it to the map
-                new mapboxgl.Marker(el)
+                new mapboxgl.Marker({{color: 'red'}})
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
-                            .setHTML(`Weather Forecast</h3><p>Temperature: ${{point.temp}}°F</p>
+                            .setHTML(`</h3>Weather Forecast</h3><p>Temperature: ${{point.temp}}°F</p>
                             <p>Dew Point: ${{point.dew_point}}°F</p><p>UV Index: ${{point.uvi}}</p>
                             <p>Cloud Cover %: ${{point.clouds}}</p><p>Wind Speed: ${{point.wind_speed}}</p>
                             <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.pop}}</p>`)
