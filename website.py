@@ -310,136 +310,6 @@ def route_planner():
     if selected_starting_point != None:
         route_info_df = route_info(selected_departure, start_lat, start_lon, end_lat, end_lon)
 
-    def collect_weather_data(route_info_df):
-
-        r = requests.get('https://httpbin.org/user-agent')
-        useragent = json.loads(r.text)['user-agent']
-        headers = {'User-agent': useragent}
-        
-        temp_list = []
-        precip_chance_list = []
-        wind_speed_list = []
-        skycover_list = []
-        snowfall_list = []
-        windgust_list = []
-
-        for i in range(len(route_info_df)):
-            st.text(i)
-            desired_val = [route_info_df['date_time'][i]]
-
-            url = f"https://api.weather.gov/points/{route_info_df['lat'][i]},{route_info_df['lon'][i]}"
-            r = requests.get(url, headers = headers)
-
-            myjson = json.loads(r.text)
-            df_url_info = pd.json_normalize(myjson['properties'])
-
-            hourlyURL = df_url_info['forecastHourly'].iloc[0]   
-            hourlyURL_grid = df_url_info['forecastGridData'].iloc[0] 
-            
-            # Obtain actual hourly forecast data
-
-            r = requests.get(hourlyURL, headers = headers)
-            r_g = requests.get(hourlyURL_grid, headers = headers)
-
-            myjson = json.loads(r.text)
-            myjson_g = json.loads(r_g.text)
-            
-            max_retries = 10
-            retry_count = 0
-
-            while retry_count <= max_retries:
-                try:
-                    df = pd.json_normalize(myjson['properties']['periods'])
-                    break
-                except Exception as e:
-                    retry_count += 1
-
-            df['startTime'] = pd.to_datetime(df['startTime']).dt.tz_localize(None)
-
-            df = (df.loc[[abs(df['startTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
-
-            df_temp = df['temperature']
-            df_pop = df['probabilityOfPrecipitation.value']
-            df_ws = df['windSpeed']
-
-            temp_list.append(df_temp)
-            precip_chance_list.append(df_pop)
-            wind_speed_list.append(df_ws)
-
-            # Obtain actual hourly forecast data from grid forecast
-            retry_count = 0
-            while retry_count <= max_retries:
-                try:
-                    df_sky = pd.json_normalize(myjson_g['properties']['skyCover']['values'])
-                    break
-                except Exception as e:
-                    retry_count += 1
-
-            retry_count = 0
-            while retry_count <= max_retries:
-                try:
-                    df_wg = pd.json_normalize(myjson_g['properties']['windGust']['values'])
-                    break
-                except Exception as e:
-                    retry_count += 1 
-
-            retry_count = 0
-            while retry_count <= max_retries:
-                try:
-                    df_snow = pd.json_normalize(myjson_g['properties']['snowfallAmount']['values'])
-                    break
-                except Exception as e:
-                    retry_count += 1                   
-            
-            def convert_time_select_closest_row(var_name):
-
-                var_name['validTime'] = var_name['validTime'].str.extract(r'^(.*?)/')
-                var_name['validTime'] = pd.to_datetime(var_name['validTime'])
-                var_name['validTime'] = var_name['validTime'].dt.tz_localize(None)
-
-
-                df_ab = (var_name.loc[[abs(var_name['validTime'] - hour).idxmin() for hour in desired_val]]).reset_index()
-
-                return df_ab
-    
-            df_skycover = convert_time_select_closest_row(df_sky)
-            df_skycover = df_skycover['value']
-
-            df_snowfall = convert_time_select_closest_row(df_snow)
-            df_snowfall = df_snowfall['value']
-
-            df_windgust = convert_time_select_closest_row(df_wg)
-            df_windgust = df_windgust['value']
-
-
-            skycover_list.append(df_skycover)
-            snowfall_list.append(df_snowfall)
-            windgust_list.append(df_windgust)
-
-        temp_list = np.array(temp_list)
-
-        precip_chance_list = np.array(precip_chance_list)
-
-        wind_speed_list = np.array(wind_speed_list)
-        wind_speed_list = wind_speed_list.flatten()
-
-        skycover_list = np.array(skycover_list)
-        skycover_list = skycover_list.flatten()
-
-        snowfall_list = np.array(snowfall_list)
-        snowfall_list = snowfall_list.flatten()
-
-        windgust_list = np.array(windgust_list)
-
-        route_info_df['temp'] = temp_list
-        route_info_df['precip'] = precip_chance_list
-        route_info_df['ws'] = wind_speed_list
-        route_info_df['skycover'] = skycover_list
-        route_info_df['snowfall'] = snowfall_list
-        route_info_df['wg'] = windgust_list
-
-        st.text(route_info_df)
-        return route_info_df
     
     def collect_weather_data1(route_info_df):
         
@@ -520,26 +390,33 @@ def route_planner():
         st.text(weather_json)
     
     def map_plot(selected_starting_point, selected_destination, weather_json):
-        
+
         # html_code = f"""
         # <!DOCTYPE html>
         # <html>
         # <head>
-        # <meta charset="utf-8">
-        # <title>Display navigation directions</title>
-        # <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-        # <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
-        # <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
-        # <style>
-        # html, body {{ margin: 0; padding: 0; }}
-        # #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
-        # </style>
+        #     <meta charset="utf-8">
+        #     <title>Display navigation directions with markers</title>
+        #     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+        #     <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
+        #     <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+        #     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
+        #     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
+        #     <style>
+        #         html, body {{ margin: 0; padding: 0; }}
+        #         #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
+        #         .marker {{
+        #             background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
+        #             background-size: cover;
+        #             width: 50px;
+        #             height: 50px;
+        #             border-radius: 50%;
+        #             cursor: pointer;
+        #         }}
+        #     </style>
         # </head>
         # <body>
-        # <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
-        # <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
         # <div id="map"></div>
-
         # <script>
         #     mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
         #     const map = new mapboxgl.Map({{
@@ -559,109 +436,48 @@ def route_planner():
         #     // Add the directions control to the map
         #     map.addControl(directions, 'top-left');
 
+        #     // GeoJSON array dynamically passed from Python
+        #     const geojson = [
+        #         {{
+        #             "dt": 1732028400000,
+        #             "lat": [40.69411],
+        #             "lon": [-73.924563],
+        #             "temp": 51.28,
+        #             "description": "Sample marker 1"
+        #         }},
+        #         {{
+        #             "dt": 1732032000000,
+        #             "lat": [40.663696],
+        #             "lon": [-74.183502],
+        #             "temp": 51.91,
+        #             "description": "Sample marker 2"
+        #         }}
+        #     ];
+
         #     map.on('load', () => {{
-        #     directions.setOrigin('{selected_starting_point}');
-        #     directions.setDestination('{selected_destination}');
-        #     directions.query();
+        #         directions.setOrigin('{selected_starting_point}');
+        #         directions.setDestination('{selected_destination}');
+        #         directions.query();
         #     }});
 
-        #     // Immediately call query() after setting both points to render the route
-        #     directions.query();
+        #     // Add markers to the map
+        #     geojson.forEach((point) => {{
+        #         const el = document.createElement('div');
+        #         el.className = 'marker';
 
-
+        #         // Create the marker and add it to the map
+        #         new mapboxgl.Marker(el)
+        #             .setLngLat([point.lon[0], point.lat[0]])
+        #             .setPopup(
+        #                 new mapboxgl.Popup({{offset: 25}})
+        #                     .setHTML(`<h3>Temperature: ${{point.temp}}°F</h3><p>${{point.description}}</p>`)
+        #             )
+        #             .addTo(map);
+        #     }});
         # </script>
-
         # </body>
         # </html>
         # """
-
-    # html_code = f"""
-    # <!DOCTYPE html>
-    # <html>
-    # <head>
-    #     <meta charset="utf-8">
-    #     <title>Display navigation directions with markers</title>
-    #     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-    #     <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
-    #     <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
-    #     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
-    #     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
-    #     <style>
-    #         html, body {{ margin: 0; padding: 0; }}
-    #         #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
-    #         .marker {{
-    #             background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
-    #             background-size: cover;
-    #             width: 50px;
-    #             height: 50px;
-    #             border-radius: 50%;
-    #             cursor: pointer;
-    #         }}
-    #     </style>
-    # </head>
-    # <body>
-    # <div id="map"></div>
-    # <script>
-    #     mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
-    #     const map = new mapboxgl.Map({
-    #         container: 'map',
-    #         style: 'mapbox://styles/mapbox/streets-v12',
-    #         center: [-79.4512, 43.6568],
-    #         zoom: 4
-    #     });
-
-    #     // Initialize the MapboxDirections control with driving only
-    #     const directions = new MapboxDirections({
-    #         accessToken: mapboxgl.accessToken,
-    #         profile: 'mapbox/driving',
-    #         controls: { profileSwitcher: false }
-    #     });
-
-    #     // Add the directions control to the map
-    #     map.addControl(directions, 'top-left');
-
-    #     // GeoJSON array dynamically passed from Python
-    #     const geojson = [
-    #         {
-    #             "dt": 1732028400000,
-    #             "lat": [40.69411],
-    #             "lon": [-73.924563],
-    #             "temp": 51.28,
-    #             "description": "Sample marker 1"
-    #         },
-    #         {
-    #             "dt": 1732032000000,
-    #             "lat": [40.663696],
-    #             "lon": [-74.183502],
-    #             "temp": 51.91,
-    #             "description": "Sample marker 2"
-    #         }
-    #     ];
-
-    #     map.on('load', () => {
-    #         directions.setOrigin('{selected_starting_point}');
-    #         directions.setDestination('{selected_destination}');
-    #         directions.query();
-    #     });
-
-    #     // Add markers to the map
-    #     geojson.forEach((point) => {
-    #         const el = document.createElement('div');
-    #         el.className = 'marker';
-
-    #         // Create the marker and add it to the map
-    #         new mapboxgl.Marker(el)
-    #             .setLngLat([point.lon[0], point.lat[0]])
-    #             .setPopup(
-    #                 new mapboxgl.Popup({ offset: 25 })
-    #                     .setHTML(`<h3>Temperature: ${point.temp}°F</h3><p>${point.description}</p>`)
-    #             )
-    #             .addTo(map);
-    #     });
-    # </script>
-    # </body>
-    # </html>
-    # """
 
         html_code = f"""
         <!DOCTYPE html>
@@ -709,22 +525,7 @@ def route_planner():
             map.addControl(directions, 'top-left');
 
             // GeoJSON array dynamically passed from Python
-            const geojson = [
-                {{
-                    "dt": 1732028400000,
-                    "lat": [40.69411],
-                    "lon": [-73.924563],
-                    "temp": 51.28,
-                    "description": "Sample marker 1"
-                }},
-                {{
-                    "dt": 1732032000000,
-                    "lat": [40.663696],
-                    "lon": [-74.183502],
-                    "temp": 51.91,
-                    "description": "Sample marker 2"
-                }}
-            ];
+            const geojson = ({weather_json})
 
             map.on('load', () => {{
                 directions.setOrigin('{selected_starting_point}');
