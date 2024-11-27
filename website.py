@@ -250,7 +250,7 @@ def route_planner():
             'geometries': 'geojson',
             'overview': 'full',
             'steps': 'true',
-            'depart_at': st_string,
+            'depart_at': '2024-11-27T21:00:000',
             'access_token': MAPBOX_ACCESS_TOKEN
         }
 
