@@ -239,7 +239,7 @@ def route_planner():
 
         selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
         st_string=str(selected_departure_time)
-        st_string = st_string[-3]
+        st_string = st_string[:-3]
 
         st.text(st_string)
         st.text(type(st_string))
@@ -251,7 +251,7 @@ def route_planner():
             'geometries': 'geojson',
             'overview': 'full',
             'steps': 'true',
-            'depart_at': '2024-11-27T23:00',
+            'depart_at': st_string,
             'access_token': MAPBOX_ACCESS_TOKEN
         }
 
