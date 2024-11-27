@@ -532,6 +532,11 @@ def route_planner():
                 directions.query();
             }});
 
+            map.on('click', (event) => {{
+            event.preventDefault();
+            event.stopPropagation();
+            }});
+
             // Add markers to the map
             geojson.forEach((point) => {{
                 //const el = document.createElement('div');
