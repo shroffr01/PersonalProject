@@ -533,9 +533,19 @@ def route_planner():
             }});
 
             map.on('click', (event) => {{
-            event.preventDefault();
-            event.stopPropagation();
-            }});
+                    const features = map.queryRenderedFeatures(event.point, {{
+                        layers: [] // Specify any layers you might want to include
+                    }});
+
+                    // Allow popups if clicking on a marker or popup-related feature
+                    if (features.length > 0 && features.some(f => f.layer.id === 'marker-layer')) {{
+                        return; // Don't block marker interactions
+                    }}
+
+                    // Otherwise, block directions from changing
+                    event.preventDefault();
+                    event.stopPropagation();
+                }});
 
             // Add markers to the map
             geojson.forEach((point) => {{
