@@ -240,8 +240,8 @@ def route_planner():
         selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
         st_string=str(selected_departure_time)
 
-        #st.text(st_string)
-        #st.text(type(st_string))
+        st.text(st_string)
+        st.text(type(st_string))
         start_point = [start_lon, start_lat] 
         end_point = [end_lon, end_lat] 
 
