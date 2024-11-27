@@ -237,8 +237,8 @@ def route_planner():
         
         MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A'
 
-        #selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
-        #st_string=str(selected_departure_time)
+        selected_departure_time = datetime.strptime(selected_departure, "%Y-%m-%d %H:%M").isoformat()
+        st_string=str(selected_departure_time)
 
         #st.text(st_string)
         #st.text(type(st_string))
@@ -250,7 +250,7 @@ def route_planner():
             'geometries': 'geojson',
             'overview': 'full',
             'steps': 'true',
-            #'depart_at': st_string,
+            'depart_at': st_string,
             'access_token': MAPBOX_ACCESS_TOKEN
         }
 
@@ -555,7 +555,7 @@ def route_planner():
             event.preventDefault();
             event.stopPropagation();
             }});
-            
+
         </script>
         </body>
         </html>
