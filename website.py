@@ -493,7 +493,7 @@ def route_planner():
                 #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
                 .marker {{
                     background-image: url('https://raw.githubusercontent.com/shroffr01/personalproject/main/icons/test_icon.png');
-                    background-size: cover;
+                    background-size: contain;
                     width: 100px;
                     height: 60px;
                     border-radius: 0%;
