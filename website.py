@@ -494,6 +494,7 @@ def route_planner():
                 .marker {{
                     background-image: url('https://raw.githubusercontent.com/shroffr01/personalproject/main/icons/test_icon.png');
                     background-size: contain;
+                    background-repeat: no-repeat;
                     width: 100px;
                     height: 60px;
                     border-radius: 0%;
