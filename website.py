@@ -496,7 +496,7 @@ def route_planner():
                     background-size: cover;
                     width: 125px;
                     height: 75px;
-                    border-radius: 50%;
+                    border-radius: 90%;
                     cursor: pointer;
                 }}
             </style>
