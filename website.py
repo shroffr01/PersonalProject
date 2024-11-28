@@ -495,8 +495,8 @@ def route_planner():
                     background-image: url('https://raw.githubusercontent.com/shroffr01/personalproject/main/icons/test3.png');
                     background-size: contain;
                     background-repeat: no-repeat;
-                    width: 150px;
-                    height: 100px;
+                    width: 100px;
+                    height: 80px;
                     border-radius: 0%;
                     cursor: pointer;
                 }}
