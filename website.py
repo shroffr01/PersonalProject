@@ -565,7 +565,7 @@ def route_planner():
     if selected_starting_point != None: 
         map_plot(selected_starting_point, selected_destination, weather_json)
         
-        
+print('hi')
 # Defines streamlit page names
 page_names_to_funcs = {
     #"Weather Forecast": page1,
