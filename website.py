@@ -534,11 +534,11 @@ def route_planner():
 
             // Add markers to the map
             geojson.forEach((point) => {{
-                //const el = document.createElement('div');
-                //el.className = 'marker';
+                const el = document.createElement('div');
+                el.className = 'marker';
 
                 // Create the marker and add it to the map
-                new mapboxgl.Marker({{color: 'red'}})
+                new mapboxgl.Marker(el)
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
