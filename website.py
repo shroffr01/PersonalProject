@@ -241,8 +241,6 @@ def route_planner():
         st_string=str(selected_departure_time)
         st_string = st_string[:-3]
 
-        st.text(st_string)
-        st.text(type(st_string))
         start_point = [start_lon, start_lat] 
         end_point = [end_lon, end_lat] 
 
@@ -494,7 +492,7 @@ def route_planner():
                 html, body {{ margin: 0; padding: 0; }}
                 #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
                 .marker {{
-                    background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
+                    background-image: url('https://raw.githubusercontent.com/shroffr01/personalproject/main/icons/test_icon.png');
                     background-size: cover;
                     width: 50px;
                     height: 50px;
