@@ -565,6 +565,7 @@ def route_planner():
         st.components.v1.html(html_code, height=600, scrolling=False)
     
     MAPBOX_ACCESS_TOKEN = os.getenv("MAPBOX_ACCESS_TOKEN")
+    MAPBOX_ACCESS_TOKEN = str(MAPBOX_ACCESS_TOKEN)
     st.text(MAPBOX_ACCESS_TOKEN)
     if selected_starting_point != None: 
         map_plot(selected_starting_point, selected_destination, weather_json, MAPBOX_ACCESS_TOKEN)
