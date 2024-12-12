@@ -382,10 +382,52 @@ def route_planner():
         return weather_info_df
 
     if selected_starting_point != None:
+
         weather_data = collect_weather_data1(route_info_df)
-    
+
+        def add_icons(weather_data):
+
+            icons_list = []
+            
+            for i in range(len(weather_data)):
+
+                a = weather_data['weather'][i][0]['icon']
+
+                if a == '01d':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon1.png'
+                elif a == '01n':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon9.png'
+                elif a == '02d':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon3.png'
+                elif a == '02n':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon10.png'
+                elif a == '03d' or a == '03n': 
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon4.png'
+                elif a == '04d' or a == '04n':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon2.png'
+                elif a == '09d' or a == '09n':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon6.png'
+                elif a == '10d' or a == '10n':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon6.png'
+                elif a == '11d' or a == '11n':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon8.png'
+                elif a == '13d' or a == '13n':
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon7.png'
+                else:
+                    icon = 'https://github.com/shroffr01/PersonalProject/blob/main/icons/icon1.png'
+
+                icons_list.append(icon)
+
+            return icons_list
+
+        icons = add_icons(weather_data)
+
+        weather_data['icon'] = icons
+        st.dataframe(weather_data)
+        
         weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop']].to_dict(orient='records')
         weather_json_df = pd.DataFrame(weather_json_df)
+
         weather_json = weather_json_df.to_json(orient="records")
     
     def map_plot(selected_starting_point, selected_destination, weather_json, MAPBOX_ACCESS_TOKEN):
