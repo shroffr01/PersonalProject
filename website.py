@@ -506,7 +506,7 @@ def route_planner():
         <body>
         <div id="map"></div>
         <script>
-            mapboxgl.accessToken = ({MAPBOX_ACCESS_TOKEN});
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
             const map = new mapboxgl.Map({{
                 container: 'map',
                 style: 'mapbox://styles/mapbox/streets-v12',
