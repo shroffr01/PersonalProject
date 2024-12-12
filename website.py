@@ -447,7 +447,7 @@ def route_planner():
                 html, body {{ margin: 0; padding: 0; }}
                 #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
                 .marker {{
-                    background-image: url('https://github.com/shroffr01/PersonalProject/blob/main/icons/icon4.png');
+                    background-image: url('https://github.com/shroffr01/PersonalProject/blob/main/icons/icon9.png');
                     background-size: contain;
                     background-repeat: no-repeat;
                     width: 100px;
