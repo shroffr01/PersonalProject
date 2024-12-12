@@ -450,8 +450,8 @@ def route_planner():
                     background-image: url('https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon2.png');
                     background-size: contain;
                     background-repeat: no-repeat;
-                    width: 10px;
-                    height: 4px;
+                    width: 100px;
+                    height: 80px;
                     border-radius: 100%;
                     cursor: pointer;
                 }}
