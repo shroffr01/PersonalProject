@@ -506,7 +506,7 @@ def route_planner():
         <body>
         <div id="map"></div>
         <script>
-            mapboxgl.accessToken = 'pk.eyJ1IjoiZmlyc3RpbndlYXRoZXIiLCJhIjoiY20ydjlpY215MDl4NjJqb2l1ZjBwbXo2NSJ9.vt3Xx08GULpig9DYBb5o0A';
+            mapboxgl.accessToken = ({MAPBOX_ACCESS_TOKEN});
             const map = new mapboxgl.Map({{
                 container: 'map',
                 style: 'mapbox://styles/mapbox/streets-v12',
@@ -565,7 +565,7 @@ def route_planner():
         st.components.v1.html(html_code, height=600, scrolling=False)
     
     MAPBOX_ACCESS_TOKEN = os.getenv("MAPBOX_ACCESS_TOKEN")
-    
+    st.text(MAPBOX_ACCESS_TOKEN)
     if selected_starting_point != None: 
         map_plot(selected_starting_point, selected_destination, weather_json, MAPBOX_ACCESS_TOKEN)
         
