@@ -452,7 +452,7 @@ def route_planner():
                     background-repeat: no-repeat;
                     width: 100px;
                     height: 80px;
-                    border-radius: 100%;
+                    border-radius: 0%;
                     cursor: pointer;
                 }}
             </style>
