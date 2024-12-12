@@ -420,11 +420,11 @@ def route_planner():
 
             return icons_list
 
-        icons = add_icons(weather_data)
+        #icons = add_icons(weather_data)
 
-        weather_data['icon'] = icons
-        st.dataframe(weather_data)
-        
+        #weather_data['icon'] = icons
+        #st.dataframe(weather_data)
+
         weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop']].to_dict(orient='records')
         weather_json_df = pd.DataFrame(weather_json_df)
 
