@@ -443,19 +443,7 @@ def route_planner():
             <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
             <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
             <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
-            //<style>
-            //   html, body {{ margin: 0; padding: 0; }}
-            //    #map {{ position: absolute; top: 0; bottom: 0; width: 100%; }}
-            //    .marker {{
-            //        background-image: url('https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon2.png');
-            //        background-size: contain;
-            //        background-repeat: no-repeat;
-            //        width: 100px;
-            //        height: 80px;
-            //        border-radius: 0%;
-            //        cursor: pointer;
-            //    }}
-            //</style>
+
         </head>
         <body>
         <div id="map"></div>
