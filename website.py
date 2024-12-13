@@ -432,6 +432,83 @@ def route_planner():
     
     def map_plot(selected_starting_point, selected_destination, weather_json, MAPBOX_ACCESS_TOKEN):
 
+        # html_code = f"""
+        # <!DOCTYPE html>
+        # <html>
+        # <head>
+        #     <meta charset="utf-8">
+        #     <title>Display navigation directions with markers</title>
+        #     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+        #     <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
+        #     <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+        #     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
+        #     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
+        # </head>
+        # <body>
+        # <div id="map"></div>
+        # <script>
+        #     mapboxgl.accessToken = "{MAPBOX_ACCESS_TOKEN}";
+        #     const map = new mapboxgl.Map({{
+        #         container: 'map',
+        #         style: 'mapbox://styles/mapbox/streets-v12',
+        #         center: [-79.4512, 43.6568],
+        #         zoom: 4
+        #     }});
+
+        #     // Initialize the MapboxDirections control with driving only
+        #     const directions = new MapboxDirections({{
+        #         accessToken: mapboxgl.accessToken,
+        #         profile: 'mapbox/driving',
+        #         controls: {{profileSwitcher: false}}
+        #     }});
+
+        #     // Add the directions control to the map
+        #     map.addControl(directions, 'top-left');
+
+        #     // GeoJSON array dynamically passed from Python
+        #     const geojson = ({weather_json})
+
+        #     map.on('load', () => {{
+        #         directions.setOrigin('{selected_starting_point}');
+        #         directions.setDestination('{selected_destination}');
+        #         directions.query();
+        #     }});
+
+
+        #     // Add markers to the map
+        #     geojson.forEach((point) => {{
+        #         const el = document.createElement('div');
+                
+        #         el.style.backgroundImage = `url(${{point.icon}})`;
+        #         el.style.backgroundSize = 'contain';
+        #         el.style.backgroundRepeat = 'no-repeat';
+        #         el.style.width = '100px';
+        #         el.style.height = '80px';
+        #         el.style.cursor = 'pointer';
+
+        #         // Create the marker and add it to the map
+        #         new mapboxgl.Marker(el)
+        #             .setLngLat([point.lon[0], point.lat[0]])
+        #             .setPopup(
+        #                 new mapboxgl.Popup({{offset: 25}})
+        #                     .setHTML(`</h3>Weather Forecast</h3><p>Temperature: ${{point.temp}}°F</p>
+        #                     <p>Dew Point: ${{point.dew_point}}°F</p><p>UV Index: ${{point.uvi}}</p>
+        #                     <p>Cloud Cover %: ${{point.clouds}}</p><p>Wind Speed: ${{point.wind_speed}}</p>
+        #                     <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.pop}}</p>`)
+        #             )
+        #             .addTo(map);
+        #     }});
+
+        #     map.on('click', (event) => {{
+        #     event.preventDefault();
+        #     event.stopPropagation();
+        #     }});
+
+        # </script>
+        # </body>
+        # </html>
+        # """
+
         html_code = f"""
         <!DOCTYPE html>
         <html>
@@ -459,14 +536,14 @@ def route_planner():
             const directions = new MapboxDirections({{
                 accessToken: mapboxgl.accessToken,
                 profile: 'mapbox/driving',
-                controls: {{profileSwitcher: false}}
+                controls: {{ profileSwitcher: false }}
             }});
 
             // Add the directions control to the map
             map.addControl(directions, 'top-left');
 
             // GeoJSON array dynamically passed from Python
-            const geojson = ({weather_json})
+            const geojson = ({weather_json});
 
             map.on('load', () => {{
                 directions.setOrigin('{selected_starting_point}');
@@ -474,12 +551,12 @@ def route_planner():
                 directions.query();
             }});
 
-
             // Add markers to the map
             geojson.forEach((point) => {{
                 const el = document.createElement('div');
                 
-                el.style.backgroundImage = `url(${{point.icon}})`;
+                // Dynamically set marker styles
+                el.style.backgroundImage = `url(${point.icon})`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 el.style.width = '100px';
@@ -490,20 +567,25 @@ def route_planner():
                 new mapboxgl.Marker(el)
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
-                        new mapboxgl.Popup({{offset: 25}})
-                            .setHTML(`</h3>Weather Forecast</h3><p>Temperature: ${{point.temp}}°F</p>
-                            <p>Dew Point: ${{point.dew_point}}°F</p><p>UV Index: ${{point.uvi}}</p>
-                            <p>Cloud Cover %: ${{point.clouds}}</p><p>Wind Speed: ${{point.wind_speed}}</p>
-                            <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.pop}}</p>`)
+                        new mapboxgl.Popup({{ offset: 25 }})
+                            .setHTML(`
+                                <h3>Weather Forecast</h3>
+                                <p>Temperature: ${point.temp}°F</p>
+                                <p>Dew Point: ${point.dew_point}°F</p>
+                                <p>UV Index: ${point.uvi}</p>
+                                <p>Cloud Cover %: ${point.clouds}</p>
+                                <p>Wind Speed: ${point.wind_speed}</p>
+                                <p>Wind Gust: ${point.wind_gust}</p>
+                                <p>Probability of Precipitation: ${point.pop}</p>
+                            `)
                     )
                     .addTo(map);
             }});
 
             map.on('click', (event) => {{
-            event.preventDefault();
-            event.stopPropagation();
+                event.preventDefault();
+                event.stopPropagation();
             }});
-
         </script>
         </body>
         </html>
