@@ -404,7 +404,7 @@ def route_planner():
                 elif a == '03d' or a == '03n': 
                     icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon4.png"'
                 elif a == '04d' or a == '04n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon2.pngg"'
+                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon2.png"'
                 elif a == '09d' or a == '09n':
                     icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon5.png"'
                 elif a == '10d' or a == '10n':
