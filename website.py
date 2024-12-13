@@ -394,27 +394,27 @@ def route_planner():
                 a = weather_data['weather'][i][0]['icon']
 
                 if a == '01d':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon1.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon1.png'
                 elif a == '01n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon9.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon9.png'
                 elif a == '02d':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon3.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon3.png'
                 elif a == '02n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon10.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon10.png'
                 elif a == '03d' or a == '03n': 
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon4.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon4.png'
                 elif a == '04d' or a == '04n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon2.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon2.png'
                 elif a == '09d' or a == '09n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon5.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon5.png'
                 elif a == '10d' or a == '10n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon6.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon6.png'
                 elif a == '11d' or a == '11n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon8.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon8.png'
                 elif a == '13d' or a == '13n':
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon7.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon7.png'
                 else:
-                    icon = '"https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon1.png"'
+                    icon = 'https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon1.png'
 
                 icons_list.append(icon)
 
