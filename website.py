@@ -431,7 +431,7 @@ def route_planner():
         weather_json = weather_json_df.to_json(orient="records")
     
     def map_plot(selected_starting_point, selected_destination, weather_json, MAPBOX_ACCESS_TOKEN):
-
+        
         html_code = f"""
         <!DOCTYPE html>
         <html>
@@ -483,7 +483,7 @@ def route_planner():
             geojson.forEach((point) => {{
                 const el = document.createElement('div');
                 
-                el.style.backgroundImage = `url("${{point.icon}}")`;
+                el.style.backgroundImage = `url('${{point.icon}}')`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 el.style.width = '100px';
