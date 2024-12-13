@@ -483,7 +483,7 @@ def route_planner():
             geojson.forEach((point) => {{
                 const el = document.createElement('div');
                 
-                el.style.backgroundImage = `url(rf{{point.icon}})`;
+                el.style.backgroundImage = `url(rf'{{point.icon}}')`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 el.style.width = '100px';
