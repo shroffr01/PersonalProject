@@ -499,7 +499,7 @@ def route_planner():
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
                             .setHTML
-                            (`<h3 style="font-size: 24px; font-weight: bold; color: #2e86c1;>"Weather Forecast</h3>
+                            (`<h3 style="font-size: 24px; font-weight: bold; color: #2e86c1;>Weather Forecast</h3>
                             <p style="font-size: 18px;>Temperature: ${{point.temp}}°F</p>
                             <p style="font-size: 18px;>Dew Point: ${{point.dew_point}}°F</p>
                             <p style="font-size: 18px;>UV Index: ${{point.uvi}}</p>
