@@ -545,9 +545,10 @@ def route_planner():
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['temp'], line_shape = 'spline', name='Temp',line={'color': 'red','width': 3}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['feels_like'], line_shape = 'spline', name='Feels Like',line={'color': 'red','width': 3, 'dash': 'dot'}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['dew_point'], line_shape = 'spline', name='Dew Point',line={'color': 'green','width': 3}))
+        fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
 
         st.plotly_chart(fig, height = 1200, use_container_width=True)
-
+        st.empty()
         fig = go.Figure()
         fig.update_layout(title = '', title_font_size= 28, xaxis_title = 'Date')
         fig.update_layout(height=450,legend=dict(font=dict(size= 20)))
@@ -558,7 +559,7 @@ def route_planner():
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['humidity'], line_shape = 'spline', name='Humidity',line={'color': 'green','width': 3}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['pop'], line_shape = 'spline', name='Prob. of Precip',line={'color': 'blue','width': 3, 'dash': 'dot'}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['clouds'], line_shape = 'spline', name='Cloud Cover',line={'color': 'grey','width': 3}))
-
+        fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
         st.plotly_chart(fig, height = 1200, use_container_width=True)
 
 
