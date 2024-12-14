@@ -482,6 +482,9 @@ def route_planner():
             // Add markers to the map
             geojson.forEach((point) => {{
                 const el = document.createElement('div');
+
+                // Debugging: Log the icon URL to ensure it is correct
+                console.log('Icon URL:', point.icon);
                 
                 el.style.backgroundImage = "url('" + point.icon + "')";
                 el.style.backgroundSize = 'contain';
