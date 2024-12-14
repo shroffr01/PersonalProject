@@ -499,14 +499,14 @@ def route_planner():
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
                             .setHTML
-                            (`<h3 style="font-size: 24px; font-weight: bold; color: #2e86c1;">Weather Forecast</h3>
-                            <p style="font-size: 18px;">Temperature: ${{point.temp}}°F</p>
-                            <p style="font-size: 18px;">Dew Point: ${{point.dew_point}}°F</p>
-                            <p style="font-size: 18px;">UV Index: ${{point.uvi}}</p>
-                            <p style="font-size: 18px;">Cloud Cover %: ${{point.clouds}}</p>
-                            <p style="font-size: 18px;">Wind Speed: ${{point.wind_speed}}</p>
-                            <p style="font-size: 18px;">Wind Gust: ${{point.wind_gust}}</p>
-                            <p style="font-size: 18px;">Probability of Precipitation: ${{point.pop}}</p>`)
+                            (`<h3 style="font-size: 21px; font-weight: bold; color: #2e86c1;">Weather Forecast</h3>
+                            <p style="font-size: 15px;">Temperature: ${{point.temp}}°F</p>
+                            <p style="font-size: 15px;">Dew Point: ${{point.dew_point}}°F</p>
+                            <p style="font-size: 15px;">UV Index: ${{point.uvi}}</p>
+                            <p style="font-size: 15px;">Cloud Cover: ${{point.clouds}}%</p>
+                            <p style="font-size: 15px;">Wind Speed: ${{point.wind_speed}}</p>
+                            <p style="font-size: 15px;">Wind Gust: ${{point.wind_gust}}</p>
+                            <p style="font-size: 15px;">Probability of Precipitation: ${{point.pop}}%</p>`)
                     )
                     .addTo(map);
             }});
