@@ -20,11 +20,8 @@ pio.renderers.default = 'browser'
 
 pio.renderers.default = 'browser'
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", initial_sidebar_state = 'collapsed')
 #st.set_option('deprecation.showPyplotGlobalUse', False)
-
-def long_running_function(param1, param2):
-    return
 
 def page1():
 
@@ -384,7 +381,6 @@ def route_planner():
 
         weather_info_df = weather_info_df.reset_index()
 
-        st.dataframe(weather_info_df)
         return weather_info_df
 
     if selected_starting_point != None:
