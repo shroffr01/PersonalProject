@@ -544,6 +544,7 @@ def route_planner():
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
         fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['temp'], name='Temp',line={'color': 'red','width': 3}))
+        st.plotly_chart(fig, height = 1200, use_container_width=True)
 
 
     if selected_starting_point != None:
