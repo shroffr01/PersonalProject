@@ -489,19 +489,20 @@ def route_planner():
                 el.style.backgroundImage = `url('${{point.icon}}')`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
-                el.style.width = '100px';
-                el.style.height = '80px';
+                el.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.3)';
+                el.style.width = '50px';
+                el.style.height = '40px';
                 el.style.cursor = 'pointer';
 
                 // Create the marker and add it to the map
-                new mapboxgl.Marker(el)
+                new mapboxgl.Marker(el, {{offset: [25, 20]}})
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
                             .setHTML(`</h3>Weather Forecast</h3><p>Temperature: ${{point.temp}}°F</p>
                             <p>Dew Point: ${{point.dew_point}}°F</p><p>UV Index: ${{point.uvi}}</p>
                             <p>Cloud Cover %: ${{point.clouds}}</p><p>Wind Speed: ${{point.wind_speed}}</p>
-                            <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.icon}}</p>`)
+                            <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.pop}}</p>`)
                     )
                     .addTo(map);
             }});
