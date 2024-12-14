@@ -494,11 +494,11 @@ def route_planner():
 ;
 
                 // Create the marker and add it to the map
-                new mapboxgl.Marker(el,{{offset: [-25, 0]}})
+                new mapboxgl.Marker(el,{{offset: [-5, 0]}})
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
-                            .setHTML(`</h3>Weather Forecast</h3> <p>Temperature: ${{point.temp}}°F</p>
+                            .setHTML(`<h3>Weather Forecast<h3><p>Temperature: ${{point.temp}}°F</p>
                             <p>Dew Point: ${{point.dew_point}}°F</p><p>UV Index: ${{point.uvi}}</p>
                             <p>Cloud Cover %: ${{point.clouds}}</p><p>Wind Speed: ${{point.wind_speed}}</p>
                             <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.pop}}</p>`)
