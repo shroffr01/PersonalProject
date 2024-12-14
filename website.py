@@ -426,7 +426,7 @@ def route_planner():
 
         weather_data['icon'] = icons
 
-        weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop', 'icon']].to_dict(orient='records')
+        weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop','icon']].to_dict(orient='records')
         weather_json_df = pd.DataFrame(weather_json_df)
 
         weather_json = weather_json_df.to_json(orient="records")
@@ -534,9 +534,10 @@ def route_planner():
 
     def line_graphs_plot(weather_data):
 
+        st.subheader('Hourly Weather Graphs')
 
         fig = go.Figure()
-        fig.update_layout(title = 'Hourly Weather Graph', title_font_size= 28)
+        fig.update_layout(title = '', title_font_size= 28)
         fig.update_layout(height=450,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
@@ -559,6 +560,18 @@ def route_planner():
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['humidity'], line_shape = 'spline', name='Humidity',line={'color': 'green','width': 3}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['pop'], line_shape = 'spline', name='Prob. of Precip',line={'color': 'blue','width': 3, 'dash': 'dot'}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['clouds'], line_shape = 'spline', name='Cloud Cover',line={'color': 'grey','width': 3}))
+        fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
+        st.plotly_chart(fig, height = 1200, use_container_width=True)
+
+        st.empty()
+        fig = go.Figure()
+        fig.update_layout(title = '', title_font_size= 28, xaxis_title = 'Date')
+        fig.update_layout(height=450,legend=dict(font=dict(size= 20)))
+        fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
+        fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
+        fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
+        fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
+        fig.add_bar(go.Scatter(x=weather_data['dt'],y=weather_data['rain.1h'], name='Rainfall'))
         fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
         st.plotly_chart(fig, height = 1200, use_container_width=True)
 
