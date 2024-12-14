@@ -571,7 +571,7 @@ def route_planner():
         fig.update_layout(height=300,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
-        fig.update_layout(showLegend = True)
+        fig.update_layout(showlegend = True)
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
         fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
         fig.add_bar(name = 'Rainfall (mm)', x=weather_data['dt'],y=weather_data['rain.1h'], marker_color = 'green')
