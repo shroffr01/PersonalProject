@@ -379,6 +379,8 @@ def route_planner():
         weather_info_df['lon'] = lon_list
         weather_info_df['alerts'] = alerts_tot
 
+        weather_info_df['pop'] = weather_info_df['pop'] * 100
+
         weather_info_df = weather_info_df.reset_index()
 
         return weather_info_df
@@ -551,7 +553,7 @@ def route_planner():
         st.plotly_chart(fig, height = 1200, use_container_width=True)
         st.empty()
         fig = go.Figure()
-        fig.update_layout(title = '', title_font_size= 28, xaxis_title = 'Date')
+        fig.update_layout(title = '', title_font_size= 28)
         fig.update_layout(height=450,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
@@ -571,7 +573,7 @@ def route_planner():
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
         fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
-        fig.add_bar(x=weather_data['dt'],y=weather_data['rain.1h'], name='Rainfall')
+        fig.add_bar(x=weather_data['dt'],y=weather_data['rain.1h'], name='Rainfall', color = 'green')
         fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
         st.plotly_chart(fig, height = 1200, use_container_width=True)
 
