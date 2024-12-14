@@ -20,7 +20,7 @@ pio.renderers.default = 'browser'
 
 pio.renderers.default = 'browser'
 
-st.set_page_config(layout="wide", page_icon=":random", initial_sidebar_state = 'collapsed')
+st.set_page_config(layout="wide", initial_sidebar_state = 'collapsed')
 #st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def page1():
