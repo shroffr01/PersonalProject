@@ -491,11 +491,10 @@ def route_planner():
                 el.style.width = '50px';
                 el.style.height = '40px';
                 el.style.cursor = 'pointer';
-                el.style.transform = 'translate(-50%, -100%)';
 ;
 
                 // Create the marker and add it to the map
-                new mapboxgl.Marker(el)
+                new mapboxgl.Marker(el,{{offset: [-25, -20]}})
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
