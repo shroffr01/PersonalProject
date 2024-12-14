@@ -7,6 +7,7 @@ import json
 import os
 from datetime import datetime, timedelta, timezone
 import googlemaps
+import plotly.express as px
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -529,7 +530,24 @@ def route_planner():
     
     if selected_starting_point != None: 
         map_plot(selected_starting_point, selected_destination, weather_json, MAPBOX_ACCESS_TOKEN)
-        
+
+    def line_graphs_plot(weather_data):
+
+        st.header("Hourly Weather Graph")
+        st.subheader(" Based on API Data")
+
+        fig = go.Figure()
+        fig.update_layout(title = 'Title', title_font_size= 28, xaxis_title = 'Date', yaxis_title = 'Wind Speed (m/s)')
+        fig.update_layout(height=650,legend=dict(font=dict(size= 20)))
+        fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
+        fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
+        fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
+        fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
+        fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['temp'], name='Temp',line={'color': 'red','width': 3}))
+
+
+    if selected_starting_point != None:
+        line_graphs_plot(weather_data)
 
 # Defines streamlit page names
 page_names_to_funcs = {
