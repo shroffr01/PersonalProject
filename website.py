@@ -493,7 +493,7 @@ def route_planner():
                 el.style.cursor = 'pointer';
 
                 // Create the marker and add it to the map
-                new mapboxgl.Marker(el, {{offset: [25, 20]}})
+                new mapboxgl.Marker(el, {{offset: [-25, -20]}})
                     .setLngLat([point.lon[0], point.lat[0]])
                     .setPopup(
                         new mapboxgl.Popup({{offset: 25}})
