@@ -20,7 +20,7 @@ pio.renderers.default = 'browser'
 
 pio.renderers.default = 'browser'
 
-st.set_page_config(layout="wide", initial_sidebar_state = 'collapsed')
+st.set_page_config(layout="wide", page_icon=":thunder_cloud_and_rain:", initial_sidebar_state = 'collapsed')
 #st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def page1():
@@ -536,8 +536,8 @@ def route_planner():
 
 
         fig = go.Figure()
-        fig.update_layout(title = 'Hourly Weather Graph', title_font_size= 28, xaxis_title = 'Date')
-        fig.update_layout(height=650,legend=dict(font=dict(size= 20)))
+        fig.update_layout(title = 'Hourly Weather Graph', title_font_size= 28)
+        fig.update_layout(height=250,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
@@ -550,7 +550,7 @@ def route_planner():
 
         fig = go.Figure()
         fig.update_layout(title = '', title_font_size= 28, xaxis_title = 'Date')
-        fig.update_layout(height=650,legend=dict(font=dict(size= 20)))
+        fig.update_layout(height=250,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
