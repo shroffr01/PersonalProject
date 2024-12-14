@@ -488,7 +488,6 @@ def route_planner():
                 el.style.backgroundImage = `url('${{point.icon}}')`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
-                el.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.3)';
                 el.style.width = '50px';
                 el.style.height = '40px';
                 el.style.cursor = 'pointer';
