@@ -20,7 +20,7 @@ pio.renderers.default = 'browser'
 
 pio.renderers.default = 'browser'
 
-st.set_page_config(layout="wide", page_icon=":thunder_cloud_and_rain:", initial_sidebar_state = 'collapsed')
+st.set_page_config(layout="wide", page_icon=":random", initial_sidebar_state = 'collapsed')
 #st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def page1():
@@ -427,7 +427,7 @@ def route_planner():
         icons = add_icons(weather_data)
 
         weather_data['icon'] = icons
-        st.dataframe(weather_data)
+        
         weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop','icon']].to_dict(orient='records')
         weather_json_df = pd.DataFrame(weather_json_df)
 
@@ -540,7 +540,7 @@ def route_planner():
 
         fig = go.Figure()
         fig.update_layout(title = '', title_font_size= 28)
-        fig.update_layout(height=450,legend=dict(font=dict(size= 20)))
+        fig.update_layout(height=350,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
@@ -554,7 +554,7 @@ def route_planner():
         st.empty()
         fig = go.Figure()
         fig.update_layout(title = '', title_font_size= 28)
-        fig.update_layout(height=450,legend=dict(font=dict(size= 20)))
+        fig.update_layout(height=350,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
