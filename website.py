@@ -425,7 +425,7 @@ def route_planner():
         weather_data['icon'] = icons
         st.dataframe(weather_data)
 
-        weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop']].to_dict(orient='records')
+        weather_json_df = weather_data[['dt', 'lat', 'lon', 'temp', 'dew_point', 'uvi', 'clouds', 'visibility', 'wind_speed', 'wind_gust', 'pop', 'icon']].to_dict(orient='records')
         weather_json_df = pd.DataFrame(weather_json_df)
 
         weather_json = weather_json_df.to_json(orient="records")
@@ -486,7 +486,7 @@ def route_planner():
                 // Debugging: Log the icon URL to ensure it is correct
                 console.log('Icon URL:', point.icon);
                 
-                el.style.backgroundImage = "url('" + point.icon + "')";
+                el.style.backgroundImage = `url('${{point.icon}}')`;
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 el.style.width = '100px';
