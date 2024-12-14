@@ -482,8 +482,11 @@ def route_planner():
             // Add markers to the map
             geojson.forEach((point) => {{
                 const el = document.createElement('div');
+
+                // Debugging: Log the icon URL to ensure it is correct
+                console.log('Icon URL:', point.icon);
                 
-                el.style.backgroundImage = "url('https://raw.githubusercontent.com/shroffr01/PersonalProject/main/icons/icon2.png')";
+                el.style.backgroundImage = "url('" + point.icon + "')";
                 el.style.backgroundSize = 'contain';
                 el.style.backgroundRepeat = 'no-repeat';
                 el.style.width = '100px';
@@ -498,8 +501,7 @@ def route_planner():
                             .setHTML(`</h3>Weather Forecast</h3><p>Temperature: ${{point.temp}}°F</p>
                             <p>Dew Point: ${{point.dew_point}}°F</p><p>UV Index: ${{point.uvi}}</p>
                             <p>Cloud Cover %: ${{point.clouds}}</p><p>Wind Speed: ${{point.wind_speed}}</p>
-                            <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.pop}}</p>`)
-`)
+                            <p>Wind Gust: ${{point.wind_gust}}</p><p>Probability of Precipitation: ${{point.icon}}</p>`)
                     )
                     .addTo(map);
             }});
