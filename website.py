@@ -573,7 +573,7 @@ def route_planner():
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
         fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
-        fig.add_bar(name = 'Rainfall (mm)' x=weather_data['dt'],y=weather_data['rain.1h'], marker_color = 'green')
+        fig.add_bar(name = 'Rainfall (mm)', x=weather_data['dt'],y=weather_data['rain.1h'], marker_color = 'green')
         fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
         st.plotly_chart(fig, height = 1200, use_container_width=True)
 
