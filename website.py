@@ -542,7 +542,8 @@ def route_planner():
         fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
         fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['temp'], line_shape = 'spline', name='Temp',line={'color': 'red','width': 3}))
-        fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['wind_gust'], line_shape = 'spline', name='Wind Gust',line={'color': 'green','width': 3}))
+        fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['feels_like'], line_shape = 'spline', name='Feels Like',line={'color': 'red','width': 3, 'dash': 'dot'}))
+        fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['dew_point'], line_shape = 'spline', name='Dew Point',line={'color': 'green','width': 3}))
 
         st.plotly_chart(fig, height = 1200, use_container_width=True)
 
