@@ -189,11 +189,12 @@ def route_planner():
 
         with st.form("Route Weather Planner"):
             st.write("Route Weather Planner")
-            selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
-            st.write("Selected City:", selected_city)
+            col1, col2, col3 = st.columns([1,1,1])
+            selected_city = col1.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
+            col1.write("Selected City:", selected_city)
 
-            selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
-            st.write("Selected City:", selected_city1)
+            selected_city1 = col2.selectbox("Select destination", df['city_ascii, state_id'].unique())
+            col2.write("Selected City:", selected_city1)
 
             # date selection 
             today = datetime.now()
@@ -206,8 +207,8 @@ def route_planner():
                 t_mod = t.strftime("%Y-%m-%d %H:%M")
                 times.append(t_mod)
 
-            date_select = st.selectbox("Select a departure time", times)
-            st.write("Selected Departure Time:", date_select)
+            date_select = col3.selectbox("Select a departure time", times)
+            col3.write("Selected Departure Time:", date_select)
 
             # Every form must have a submit button.
             submitted = st.form_submit_button("Submit")
@@ -535,7 +536,7 @@ def route_planner():
 
 
         fig = go.Figure()
-        fig.update_layout(title = 'Hourly Weather Graph', title_font_size= 28, xaxis_title = 'Date', yaxis_title = 'Wind Speed (m/s)')
+        fig.update_layout(title = 'Hourly Weather Graph', title_font_size= 28, xaxis_title = 'Date')
         fig.update_layout(height=650,legend=dict(font=dict(size= 20)))
         fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
         fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
@@ -544,6 +545,19 @@ def route_planner():
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['temp'], line_shape = 'spline', name='Temp',line={'color': 'red','width': 3}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['feels_like'], line_shape = 'spline', name='Feels Like',line={'color': 'red','width': 3, 'dash': 'dot'}))
         fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['dew_point'], line_shape = 'spline', name='Dew Point',line={'color': 'green','width': 3}))
+
+        st.plotly_chart(fig, height = 1200, use_container_width=True)
+
+        fig = go.Figure()
+        fig.update_layout(title = '', title_font_size= 28, xaxis_title = 'Date')
+        fig.update_layout(height=650,legend=dict(font=dict(size= 20)))
+        fig.update_layout(xaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
+        fig.update_layout(yaxis = dict(title_font = dict(size=22), tickfont = dict(size=18)))
+        fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='grey')
+        fig.update_xaxes(showgrid = True, gridcolor='grey', griddash='dash', minor_griddash="dot")        
+        fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['humidity'], line_shape = 'spline', name='Humidity',line={'color': 'green','width': 3}))
+        fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['pop'], line_shape = 'spline', name='Prob. of Precip',line={'color': 'blue','width': 3, 'dash': 'dot'}))
+        fig.add_trace(go.Scatter(x=weather_data['dt'],y=weather_data['clouds'], line_shape = 'spline', name='Cloud Cover',line={'color': 'grey','width': 3}))
 
         st.plotly_chart(fig, height = 1200, use_container_width=True)
 
