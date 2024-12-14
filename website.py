@@ -189,12 +189,15 @@ def route_planner():
 
         with st.form("Route Weather Planner"):
             st.write("Route Weather Planner")
-            col1, col2, col3 = st.columns([1,1,1])
-            selected_city = col1.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
-            col1.write("Selected City:", selected_city)
+            col1, col2, col3 = st.columns(3)
 
-            selected_city1 = col2.selectbox("Select destination", df['city_ascii, state_id'].unique())
-            col2.write("Selected City:", selected_city1)
+            with col1:
+                selected_city = st.selectbox("Select a starting point", df['city_ascii, state_id'].unique())
+                st.write("Selected City:", selected_city)
+
+            with col2:
+                selected_city1 = st.selectbox("Select destination", df['city_ascii, state_id'].unique())
+                st.write("Selected City:", selected_city1)
 
             # date selection 
             today = datetime.now()
@@ -206,12 +209,13 @@ def route_planner():
                 t = simplified_today + timedelta(hours=i)
                 t_mod = t.strftime("%Y-%m-%d %H:%M")
                 times.append(t_mod)
+            
+            with col3:
+                date_select = st.selectbox("Select a departure time", times)
+                st.write("Selected Departure Time:", date_select)
 
-            date_select = col3.selectbox("Select a departure time", times)
-            col3.write("Selected Departure Time:", date_select)
-
-            # Every form must have a submit button.
-            submitted = col3.form_submit_button("Submit")
+            with col2:
+                submitted = st.form_submit_button("Submit")
 
             selected_starting_point = None
             selected_destination = None
