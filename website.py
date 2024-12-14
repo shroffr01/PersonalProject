@@ -211,7 +211,7 @@ def route_planner():
             col3.write("Selected Departure Time:", date_select)
 
             # Every form must have a submit button.
-            submitted = st.form_submit_button("Submit")
+            submitted = col3.form_submit_button("Submit")
 
             selected_starting_point = None
             selected_destination = None
